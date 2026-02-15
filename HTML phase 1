@@ -36,7 +36,7 @@
             <h3>🔥 Nos Coups de Cœur</h3>
             <div class="card-grid" style="justify-content: center;">
                 <article class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Couscous+Royal" alt="Couscous Royal">
+                    <img src=   >                                                                     /* ajouter image couscous royal
                     <h4>Couscous Royal</h4>
                     <p>Semoule fine, merguez, poulet, agneau et légumes du soleil.</p>
                     <p><strong>18.00 €</strong></p>
@@ -44,7 +44,7 @@
                 </article>
 
                 <article class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Tajine+Agneau" alt="Tajine Agneau">
+                    <img src=  >                                                                  /* ajouter image tajine agneau
                     <h4>Tajine d'Agneau aux Pruneaux</h4>
                     <p>Mijoté sucré-salé aux amandes grillées.</p>
                     <p><strong>16.50 €</strong></p>
@@ -52,7 +52,7 @@
                 </article>
 
                 <article class="card">
-                    <img src="https://via.placeholder.com/300x200?text=The+Menthe" alt="Thé à la menthe">
+                    <img src=  >                                                                /* ajouter image thé a la menthe
                     <h4>Thé à la Menthe</h4>
                     <p>Le traditionnel, servi bien chaud.</p>
                     <p><strong>3.00 €</strong></p>
