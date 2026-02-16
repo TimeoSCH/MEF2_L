@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <h1>Les délices de fafa 🇲🇦</h1>
+     <h1 align="center">Les délices de fafa 🇲🇦</h1>
         <nav>
             <ul>
                 <li><a href="index.html">Accueil</a></li>
@@ -36,23 +36,23 @@
             <h3>🔥 Nos Coups de Cœur</h3>
             <div class="card-grid" style="justify-content: center;">
                 <article class="card">
-                    <img src=   >                                                                     /* ajouter image couscous royal
-                    <h4>Couscous Royal</h4>
-                    <p>Semoule fine, merguez, poulet, agneau et légumes du soleil.</p>
+                    <img src="couscous.png">
+                    <h4>Couscous</h4>
+                    <p>Semoule fine, merguez, poulet, agneau et légumes frais.</p>
                     <p><strong>18.00 €</strong></p>
                     <button class="btn">Commander</button>
                 </article>
 
                 <article class="card">
-                    <img src=  >                                                                  /* ajouter image tajine agneau
-                    <h4>Tajine d'Agneau aux Pruneaux</h4>
+                    <img src="tajine.jpg"> 
+                    <h4>Tajine d'agneau aux pruneaux</h4>
                     <p>Mijoté sucré-salé aux amandes grillées.</p>
                     <p><strong>16.50 €</strong></p>
                     <button class="btn">Commander</button>
                 </article>
 
                 <article class="card">
-                    <img src=  >                                                                /* ajouter image thé a la menthe
+                    <img src="the.jpg">  
                     <h4>Thé à la Menthe</h4>
                     <p>Le traditionnel, servi bien chaud.</p>
                     <p><strong>3.00 €</strong></p>
