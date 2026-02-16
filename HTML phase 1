@@ -38,7 +38,7 @@
                 <article class="card">
                     <img src="couscous.png">
                     <h4>Couscous</h4>
-                    <p>Semoule fine, merguez, poulet, agneau et légumes frais.</p>
+                    <p>Semoule fine, agneau et légumes frais.</p>
                     <p><strong>18.00 €</strong></p>
                     <button class="btn">Commander</button>
                 </article>
