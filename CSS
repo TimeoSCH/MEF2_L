@@ -1,9 +1,8 @@
-
 :root {
-    --primary-color: #c05621; 
-    --secondary-color: #2c5282; 
-    --accent-color: #d69e2e; 
-    --bg-color: #fffaf0; 
+    --primary-color: #27A400; 
+    --secondary-color: #AC0000; 
+    --accent-color: #000000; 
+    --bg-color: #ffffff; 
     --text-color: #2d3748; 
     --white: #ffffff;
 }
@@ -19,6 +18,12 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
+    background-color: var(--bg-color);
+    background-image: url('zelij.jpg'), url('zelij.jpg');
+    background-position: left top, right top;
+    background-repeat: repeat-y, repeat-y;
+    background-size: 340px auto, 340px auto;
+    background-attachment: fixed, fixed;
 }
 
 
@@ -56,7 +61,14 @@ main {
     min-height: 80vh;
 }
 
-h1, h2, h3 {
+h1 {
+    font-size: 100px; 
+    font-weight: bold; 
+    text-align: center; 
+    color: #007C08;
+    }
+
+h2, h3 {
     color: var(--primary-color);
     margin-bottom: 1rem;
 }
@@ -113,7 +125,7 @@ input, select, textarea {
     height: 200px;
     object-fit: cover;
     border-radius: 4px;
-    background-color: #eee; /* Placeholder couleur */
+    background-color: #eee; 
 }
 
 /* Footer */
