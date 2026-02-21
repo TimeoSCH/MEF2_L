@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription - Les délices de fafa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header><h1>Inscription</h1></header>
+    <main style="max-width: 600px;">
+        <form>
+            <label>Nom :</label>
+            <input type="text" required>
+            
+            <label>Prénom :</label>
+            <input type="text" required>
+            
+            <label>Adresse complète :</label>
+            <textarea rows="3"></textarea>
+            
+            <label>Téléphone :</label>
+            <input type="tel" required>
+            
+            <label>Mot de passe :</label>
+            <input type="password" required>
+            
+            <button type="submit" class="btn">S'inscrire</button>
+        </form>
+    </main>
+</body>
+</html>
