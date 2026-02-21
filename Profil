@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Profil</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Mon Espace Fafa</h1>
+        <nav><ul><li><a href="index.html">Retour Accueil</a></li></ul></nav>
+    </header>
+    <main>
+        <section style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h3>Mes Informations <span>✏️</span></h3> <p><strong>Nom :</strong> Dupont</p>
+            <p><strong>Prénom :</strong> Jean</p>
+            <p><strong>Adresse :</strong> 12 rue des Oliviers, Cergy</p>
+            <p><strong>Solde Fidélité :</strong> 120 points (1 couscous offert !)</p>
+        </section>
+
+        <section>
+            <h3>Historique de commandes</h3>
+            <table border="1" style="width: 100%; border-collapse: collapse; background: white;">
+                <tr style="background: var(--primary-color); color: white;">
+                    <th>Date</th>
+                    <th>Plats</th>
+                    <th>Prix</th>
+                    <th>Statut</th>
+                </tr>
+                <tr>
+                    <td>10/02/2026</td>
+                    <td>1x Tajine Poulet, 1x Soda</td>
+                    <td>18.50 €</td>
+                    <td>Livrée</td>
+                </tr>
+                <tr>
+                    <td>01/02/2026</td>
+                    <td>2x Couscous Royal</td>
+                    <td>36.00 €</td>
+                    <td>Livrée <a href="notation.html">[Noter]</a></td>
+                </tr>
+            </table>
+        </section>
+    </main>
+</body>
+</html>
