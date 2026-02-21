@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>La Carte - Les délices de fafa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Les délices de fafa</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="produits.html">La Carte</a></li>
+                <li><a href="profil.html">Mon Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Notre Carte</h2>
+        
+        <div style="margin-bottom: 20px;">
+            <input type="text" placeholder="Chercher dans le menu...">
+        </div>
+
+        <div class="layout-produits">
+            <aside class="filtres">
+                <h3>Filtres</h3>
+                <h4>Catégories</h4>
+                <ul>
+                    <li><input type="checkbox"> Entrées</li>
+                    <li><input type="checkbox"> Plats (Couscous/Tajines)</li>
+                    <li><input type="checkbox"> Desserts</li>
+                    <li><input type="checkbox"> Boissons</li>
+                </ul>
+                <h4>Allergènes</h4>
+                <ul>
+                    <li><input type="checkbox"> Sans Gluten</li>
+                    <li><input type="checkbox"> Sans Arachides</li>
+                </ul>
+                <button class="btn" style="margin-top: 10px; width:100%">Appliquer</button>
+            </aside>
+
+            <section class="card-grid">
+                <article class="card">
+                    <img src="https://via.placeholder.com/300x200?text=Harira" alt="Harira">
+                    <h4>Soupe Harira</h4>
+                    <p>Soupe traditionnelle marocaine.</p>
+                    <p><strong>6.00 €</strong></p>
+                </article>
+                <article class="card">
+                    <img src="https://via.placeholder.com/300x200?text=Pastilla" alt="Pastilla">
+                    <h4>Pastilla Poulet</h4>
+                    <p>Feuilleté croquant sucré-salé.</p>
+                    <p><strong>8.50 €</strong></p>
+                </article>
+                <article class="card">
+                    <img src="https://via.placeholder.com/300x200?text=Cornes+Gazelle" alt="Cornes de Gazelle">
+                    <h4>Cornes de Gazelle</h4>
+                    <p>Pâtisserie aux amandes et fleur d'oranger.</p>
+                    <p><strong>2.00 €</strong></p>
+                </article>
+                </section>
+        </div>
+    </main>
+    
+    <footer><p>&copy; 2025 Les délices de fafa</p></footer>
+</body>
+</html>
