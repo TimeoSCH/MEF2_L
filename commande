@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cuisine - Commandes en cours</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header><h1>👨‍🍳 Interface Cuisine</h1></header>
+    <main>
+        <h2>À Préparer</h2>
+        <div class="card-grid">
+            <article class="card" style="border-left: 5px solid red;">
+                <h4>Commande #402</h4>
+                <ul>
+                    <li>1x Tajine Kefta</li>
+                    <li>2x Pain batbout</li>
+                </ul>
+                <button class="btn">Passer en livraison </button>
+            </article>
+        </div>
+        
+        <h2 style="margin-top:20px;">En cours de livraison</h2>
+        <div class="card-grid">
+            <article class="card" style="border-left: 5px solid orange;">
+                <h4>Commande #401</h4>
+                <p>Livreur : Amine</p>
+            </article>
+        </div>
+    </main>
+</body>
+</html>
