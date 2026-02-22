@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Interface Livreur</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header><h1>Livraison en cours</h1></header>
+    <main>
+        <div class="card" style="width: 100%; max-width: 400px; margin: 0 auto;">
+            <h3>Client : Jean Dupont</h3>
+            <p><strong>Adresse :</strong> 12 rue des Oliviers, Cergy</p>
+            <p><strong>Code :</strong> 45B2</p>
+            <p><strong>Tel :</strong> 06 01 02 03 04</p>
+            <p><strong>Note :</strong> "Laissez devant la porte svp"</p>
+            
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="btn" style="background-color: green;">Ouvrir GPS </button>
+                <button class="btn">Appeler 📞</button>
+            </div>
+            
+            <hr style="margin: 15px 0;">
+            <button class="btn" style="width: 100%;">Confirmer Livraison </button>
+        </div>
+    </main>
+</body>
+</html>
