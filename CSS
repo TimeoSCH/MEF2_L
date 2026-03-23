@@ -1,7 +1,7 @@
 :root {
-    --primary-color: #27A400; 
-    --secondary-color: #AC0000; 
-    --accent-color: #000000; 
+    --primary-color: #27A400;
+    --secondary-color: #AC0000;
+    --accent-color: #000000;
     --bg-color: #ffffff; 
     --text-color: #2d3748; 
     --white: #ffffff;
@@ -14,18 +14,14 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    line-height: 1.6;
-    background-color: var(--bg-color);
-    background-image: url('zelij.jpg'), url('zelij.jpg');
+    background-image: url('zelij.jpg'), url('zelij.jpg'); 
+    
     background-position: left top, right top;
     background-repeat: repeat-y, repeat-y;
-    background-size: 340px auto, 340px auto;
+    background-size: 340px auto, 340px auto; 
     background-attachment: fixed, fixed;
+    
 }
-
 
 header {
     background-color: var(--secondary-color);
@@ -53,12 +49,21 @@ nav a:hover {
     color: var(--accent-color);
 }
 
-/* Structure Globale */
 main {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 0 20px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('rue_bleue.jpg');
+    
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    background-color: transparent; 
+
+    max-width: 1100px; 
+    margin: 30px auto;
+    padding: 40px;
     min-height: 80vh;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1); 
 }
 
 h1 {
@@ -66,14 +71,13 @@ h1 {
     font-weight: bold; 
     text-align: center; 
     color: #007C08;
-    }
+}
 
 h2, h3 {
     color: var(--primary-color);
     margin-bottom: 1rem;
 }
 
-/* Boutons */
 .btn {
     display: inline-block;
     background-color: var(--primary-color);
@@ -86,10 +90,9 @@ h2, h3 {
 }
 
 .btn:hover {
-    background-color: #9c421b;
+    background-color: #1a7000; 
 }
 
-/* Formulaires */
 input, select, textarea {
     width: 100%;
     padding: 10px;
@@ -98,7 +101,6 @@ input, select, textarea {
     border-radius: 4px;
 }
 
-/* Cartes (Plats, Commandes) */
 .card-grid {
     display: flex;
     flex-wrap: wrap;
@@ -128,7 +130,6 @@ input, select, textarea {
     background-color: #eee; 
 }
 
-/* Footer */
 footer {
     text-align: center;
     padding: 20px;
@@ -137,15 +138,30 @@ footer {
     margin-top: 40px;
 }
 
-/* Spécifique Page Produits */
 .layout-produits {
     display: flex;
     gap: 20px;
 }
+
 .filtres {
     width: 250px;
     background: var(--white);
     padding: 15px;
     height: fit-content;
     border-radius: 8px;
+}
+
+@media (max-width: 1200px) {
+    body {
+        background-image: none; 
+    }
+    
+    main {
+        margin: 15px;
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 50px;
+    }
 }
