@@ -7,16 +7,18 @@
 </head>
 <body>
     <header>
-     <h1 align="center">Les délices de fafa 🇲🇦</h1>
-        <nav>
+        <h1 style="text-align: center; color: #006233;">
+            Les délices de fafa 🇲🇦
+        </h1>
+        <nav style="background-color: var(--secondary-color); padding: 10px; border-radius: 5px; margin-top: 15px;">
             <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="produits.html">La Carte</a></li>
-                <li><a href="connexion.html">Connexion</a></li>
-                <li><a href="inscription.html">Inscription</a></li>
-                <li><a href="profil.html">Mon Profil</a></li>
-                <li><a href="commandes.html">Restaurateur</a></li>
-                <li><a href="livraison.html">Livreur</a></li>
+                <li><a href="index.html">🏠 Accueil</a></li>
+                <li><a href="produits.html">🍲 La Carte</a></li>
+                <li><a href="inscription.html">📝 Inscription</a></li>
+                <li><a href="connexion.html">🔑 Connexion</a></li>
+                <li><a href="profil.html">👤 Mon Profil</a></li>
+                <li><a href="commandes.html" class="lien-metier">👨‍🍳 Cuisine</a></li>
+                <li><a href="livraison.html" class="lien-metier">🛵 Livraison</a></li>
             </ul>
         </nav>
     </header>
@@ -36,7 +38,7 @@
             <h3>🔥 Nos Coups de Cœur</h3>
             <div class="card-grid" style="justify-content: center;">
                 <article class="card">
-                    <img src="couscous.png">
+                    <img src="couscous.jpg">
                     <h4>Couscous</h4>
                     <p>Semoule fine, agneau et légumes frais.</p>
                     <p><strong>18.00 €</strong></p>
