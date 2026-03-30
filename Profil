@@ -7,14 +7,26 @@
 </head>
 <body>
     <header>
-        <h1>Mon Espace Fafa</h1>
-        <nav><ul><li><a href="index.html">Retour Accueil</a></li></ul></nav>
+        <h1 style="text-align: center; color: #006233;">
+            Les délices de fafa 🇲🇦
+        </h1>
+        <nav style="background-color: var(--secondary-color); padding: 10px; border-radius: 5px; margin-top: 15px;">
+            <ul>
+                <li><a href="index.html">🏠 Accueil</a></li>
+                <li><a href="produits.html">🍲 La Carte</a></li>
+                <li><a href="inscription.html">📝 Inscription</a></li>
+                <li><a href="connexion.html">🔑 Connexion</a></li>
+                <li><a href="profil.html">👤 Mon Profil</a></li>
+                <li><a href="commandes.html" class="lien-metier">👨‍🍳 Cuisine</a></li>
+                <li><a href="livraison.html" class="lien-metier">🛵 Livraison</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
         <section style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h3>Mes Informations <span>✏️</span></h3> <p><strong>Nom :</strong> Dupont</p>
-            <p><strong>Prénom :</strong> Jean</p>
-            <p><strong>Adresse :</strong> 12 rue des Oliviers, Cergy</p>
+            <h3>Mes Informations <span>✏️</span></h3> <p><strong>Nom :</strong> Pims</p>
+            <p><strong>Prénom :</strong> Rayanet</p>
+            <p><strong>Adresse :</strong> 67 rue des paff, Cergy</p>
             <p><strong>Solde Fidélité :</strong> 120 points (1 couscous offert !)</p>
         </section>
 
