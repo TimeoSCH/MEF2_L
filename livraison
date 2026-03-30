@@ -2,26 +2,45 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Interface Livreur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Livraison - Les délices de fafa</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header><h1>Livraison en cours</h1></header>
-    <main>
-        <div class="card" style="width: 100%; max-width: 400px; margin: 0 auto;">
-            <h3>Client : Jean Dupont</h3>
-            <p><strong>Adresse :</strong> 12 rue des Oliviers, Cergy</p>
-            <p><strong>Code :</strong> 45B2</p>
-            <p><strong>Tel :</strong> 06 01 02 03 04</p>
-            <p><strong>Note :</strong> "Laissez devant la porte svp"</p>
+    <header>
+        <h1 style="text-align: center; color: #006233;">
+            Les délices de fafa 🇲🇦
+        </h1>
+        <nav style="background-color: var(--secondary-color); padding: 10px; border-radius: 5px; margin-top: 15px;">
+            <ul>
+                <li><a href="index.html">🏠 Accueil</a></li>
+                <li><a href="produits.html">🍲 La Carte</a></li>
+                <li><a href="inscription.html">📝 Inscription</a></li>
+                <li><a href="connexion.html">🔑 Connexion</a></li>
+                <li><a href="profil.html">👤 Mon Profil</a></li>
+                <li><a href="commandes.html" class="lien-metier">👨‍🍳 Cuisine</a></li>
+                <li><a href="livraison.html" class="lien-metier">🛵 Livraison</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main style="display: flex; justify-content: center;">
+        <div class="card" style="width: 100%; max-width: 400px;">
+            <h2 style="text-align: center;">Course en cours 🛵</h2>
+            <hr style="margin: 15px 0;">
             
-            <div style="display: flex; gap: 10px; margin-top: 15px;">
-                <button class="btn" style="background-color: green;">Ouvrir GPS </button>
-                <button class="btn">Appeler 📞</button>
+            <h3>Client : M. Pims</h3>
+            <p><strong>Adresse :</strong> 67 rue de la Paix, Paris</p>
+            <p><strong>Bâtiment :</strong> B, 3ème étage</p>
+            <p><strong>Interphone :</strong> 4589</p>
+            <p><strong>Tél :</strong> 06 12 34 56 78</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                <button class="btn" style="background-color: #27ae60;">Ouvrir GPS (Waze/Maps) 🗺️</button>
+                <button class="btn" style="background-color: #3498db;">Appeler le client 📞</button>
             </div>
             
-            <hr style="margin: 15px 0;">
-            <button class="btn" style="width: 100%;">Confirmer Livraison </button>
+            <hr style="margin: 20px 0;">
+            <button class="btn" style="width: 100%; background-color: var(--primary-color);">Livraison Terminée ✅</button>
         </div>
     </main>
 </body>
