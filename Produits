@@ -6,65 +6,117 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Les délices de fafa</h1>
-        <nav>
+   <header>
+        <h1 style="text-align: center; color: #006233;">
+            Les délices de fafa 🇲🇦
+        </h1>
+        <nav style="background-color: var(--secondary-color); padding: 10px; border-radius: 5px; margin-top: 15px;">
             <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="produits.html">La Carte</a></li>
-                <li><a href="profil.html">Mon Profil</a></li>
+                <li><a href="index.html">🏠 Accueil</a></li>
+                <li><a href="produits.html">🍲 La Carte</a></li>
+                <li><a href="inscription.html">📝 Inscription</a></li>
+                <li><a href="connexion.html">🔑 Connexion</a></li>
+                <li><a href="profil.html">👤 Mon Profil</a></li>
+                <li><a href="commandes.html" class="lien-metier">👨‍🍳 Cuisine</a></li>
+                <li><a href="livraison.html" class="lien-metier">🛵 Livraison</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <h2>Notre Carte</h2>
+        <h2 style="text-align: center; margin-bottom: 20px;">Notre Carte Marocaine</h2>
         
-        <div style="margin-bottom: 20px;">
-            <input type="text" placeholder="Chercher dans le menu...">
+        <div style="margin-bottom: 30px; text-align: center;">
+            <input type="text" placeholder="Rechercher un plat, une saveur..." style="width: 50%; max-width: 400px;">
+            <button class="btn">Chercher</button>
         </div>
 
-        <div class="layout-produits">
-            <aside class="filtres">
-                <h3>Filtres</h3>
-                <h4>Catégories</h4>
-                <ul>
+        <div class="layout-produits" style="display: flex; gap: 30px; align-items: flex-start;">
+            
+            <aside class="filtres" style="min-width: 200px; background: var(--white); padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <h3 style="font-size: 1.2rem;">Filtrer par</h3>
+                <h4 style="margin-top: 10px; font-size: 1rem;">Catégories</h4>
+                <ul style="list-style: none; padding-left: 0;">
                     <li><input type="checkbox"> Entrées</li>
-                    <li><input type="checkbox"> Plats (Couscous/Tajines)</li>
+                    <li><input type="checkbox"> Plats</li>
                     <li><input type="checkbox"> Desserts</li>
-                    <li><input type="checkbox"> Boissons</li>
                 </ul>
-                <h4>Allergènes</h4>
-                <ul>
+                <h4 style="margin-top: 10px; font-size: 1rem;">Allergènes</h4>
+                <ul style="list-style: none; padding-left: 0;">
                     <li><input type="checkbox"> Sans Gluten</li>
-                    <li><input type="checkbox"> Sans Arachides</li>
+                    <li><input type="checkbox"> Végétarien</li>
                 </ul>
-                <button class="btn" style="margin-top: 10px; width:100%">Appliquer</button>
+                <button class="btn" style="width:100%; margin-top:15px;">Appliquer</button>
             </aside>
 
-            <section class="card-grid">
-                <article class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Harira" alt="Harira">
-                    <h4>Soupe Harira</h4>
-                    <p>Soupe traditionnelle marocaine.</p>
-                    <p><strong>6.00 €</strong></p>
-                </article>
-                <article class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Pastilla" alt="Pastilla">
-                    <h4>Pastilla Poulet</h4>
-                    <p>Feuilleté croquant sucré-salé.</p>
-                    <p><strong>8.50 €</strong></p>
-                </article>
-                <article class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Cornes+Gazelle" alt="Cornes de Gazelle">
-                    <h4>Cornes de Gazelle</h4>
-                    <p>Pâtisserie aux amandes et fleur d'oranger.</p>
-                    <p><strong>2.00 €</strong></p>
-                </article>
-                </section>
+            <section style="flex: 1;">
+                
+                <h3 style="border-bottom: 2px solid var(--accent-color); padding-bottom: 5px; color: var(--primary-color);">Les Entrées</h3>
+                <div class="card-grid" style="margin-bottom: 40px; display: flex; flex-wrap: wrap; gap: 20px;">
+                    <article class="card">
+                        <img src="harira.jpg" alt="Soupe Harira">
+                        <h4>Soupe Harira</h4>
+                        <p>Soupe traditionnelle réconfortante aux tomates, pois chiches et céleri.</p>
+                        <p><strong>6.00 €</strong></p>
+                        <button class="btn" style="width: 100%;">Ajouter</button>
+                    </article>
+                    <article class="card">
+                        <img src="pastilla.jpg" alt="Pastilla Poulet">
+                        <h4>Pastilla au Poulet</h4>
+                        <p>Feuilleté croquant sucré-salé, amandes et cannelle.</p>
+                        <p><strong>8.50 €</strong></p>
+                        <button class="btn" style="width: 100%;">Ajouter</button>
+                    </article>
+                </div>
+
+                <h3 style="border-bottom: 2px solid var(--accent-color); padding-bottom: 5px; color: var(--primary-color);">Les Plats</h3>
+                <div class="card-grid" style="margin-bottom: 40px; display: flex; flex-wrap: wrap; gap: 20px;">
+                    <article class="card" style="border: 2px solid var(--primary-color);">
+                        <p style="background: var(--primary-color); color: white; padding: 2px 10px; font-weight: bold; font-size: 0.8rem; display: inline-block; border-radius: 4px; margin-bottom: 10px;">❤️ Coup de cœur</p>
+                        <img src="couscous.jpg" alt="Couscous Royal">
+                        <h4>Couscous Royal</h4>
+                        <p>Semoule fine, poulet, agneau et légumes frais.</p>
+                        <p><strong>18.00 €</strong></p>
+                        <button class="btn" style="width: 100%;">Ajouter</button>
+                    </article>
+                    <article class="card" style="border: 2px solid var(--primary-color);">
+                        <p style="background: var(--primary-color); color: white; padding: 2px 10px; font-weight: bold; font-size: 0.8rem; display: inline-block; border-radius: 4px; margin-bottom: 10px;">❤️ Coup de cœur</p>
+                        <img src="tajine.jpg" alt="Tajine d'Agneau">
+                        <h4>Tajine d'Agneau aux Pruneaux</h4>
+                        <p>Mijoté sucré-salé aux amandes grillées.</p>
+                        <p><strong>16.50 €</strong></p>
+                        <button class="btn" style="width: 100%;">Ajouter</button>
+                    </article>
+                </div>
+
+                <h3 style="border-bottom: 2px solid var(--accent-color); padding-bottom: 5px; color: var(--primary-color);">Les Desserts & Boissons</h3>
+                <div class="card-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
+                    <article class="card">
+                        <img src="corne.jpg" alt="Cornes de Gazelle">
+                        <h4>5 Cornes de Gazelle</h4>
+                        <p>Pâtisserie fine aux amandes et à la fleur d'oranger.</p>
+                        <p><strong>2.00 €</strong></p>
+                        <button class="btn" style="width: 100%;">Ajouter</button>
+                    </article>
+                    <article class="card" style="border: 2px solid var(--primary-color);">
+                        <p style="background: var(--primary-color); color: white; padding: 2px 10px; font-weight: bold; font-size: 0.8rem; display: inline-block; border-radius: 4px; margin-bottom: 10px;">❤️ Coup de cœur</p>
+                        <img src="the.jpg" alt="Thé à la menthe">
+                        <h4>Thé à la Menthe</h4>
+                        <p>Le traditionnel thé marocain, servi bien chaud et sucré.</p>
+                        <p><strong>3.00 €</strong></p>
+                        <button class="btn" style="width: 100%;">Ajouter</button>
+                    </article>
+                </div>
+                
+
+            </section>
         </div>
     </main>
-    
-    <footer><p>&copy; 2025 Les délices de fafa</p></footer>
+
+    <footer style="text-align: center; padding: 20px; background-color: var(--text-color); color: white; margin-top: 40px;">
+        <p>&copy; 2026 Les délices de fafa - Projet Creative Yumland</p>
+    </footer>
+</body>
+</html>
 </body>
 </html>
