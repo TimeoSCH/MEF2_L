@@ -62,18 +62,18 @@ hr { border: 0; border-top: 1px solid var(--border-color); margin: 15px 0; }
 .mt-15 { margin-top: 15px; }
 .mt-20 { margin-top: 20px; }
 .mt-30 { margin-top: 30px; }
+.mb-5 { margin-bottom: 5px; }
 .mb-10 { margin-bottom: 10px; }
 .mb-15 { margin-bottom: 15px; }
 .mb-20 { margin-bottom: 20px; }
 .mb-30 { margin-bottom: 30px; }
+.mb-40 { margin-bottom: 40px; }
 .w-100 { width: 100%; }
-
 
 nav ul { list-style: none; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 0; padding: 0; }
 nav a { color: var(--white); text-decoration: none; font-weight: bold; padding: 5px 10px; }
 nav a:hover { color: var(--accent-color); }
 .lien-metier { color: var(--accent-color); }
-
 
 .btn { display: inline-block; background-color: var(--primary-color); color: var(--white); padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; text-align: center; font-weight: bold; }
 .btn:hover { background-color: #1a7000; }
@@ -86,7 +86,27 @@ nav a:hover { color: var(--accent-color); }
 input, select, textarea { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; background: white; }
 
 
-/* Page Produits */
+
+/* ACCUEIL */
+
+.hero { text-align: center; padding: 40px 0; }
+.search-bar-home { max-width: 500px; margin: 20px auto; }
+.justify-center { justify-content: center; }
+
+.header-title { text-align: center; color: #006233; }
+.main-nav { background-color: var(--secondary-color); padding: 10px; border-radius: 5px; margin-top: 15px; }
+
+.main-small { max-width: 600px; margin: 30px auto; }
+.flex-justify-center { display: flex; justify-content: center; }
+.delivery-card { width: 100%; max-width: 400px; }
+.hr-20 { margin: 20px 0; border: 0; border-top: 1px solid var(--border-color); }
+.filter-title { font-size: 1.2rem; }
+.filter-subtitle { margin-top: 10px; font-size: 1rem; }
+.profile-info-section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+.profile-table { width: 100%; border-collapse: collapse; background: white; }
+.table-header-row { background: var(--primary-color); color: white; }
+
+/* Produits */
 .search-container { text-align: center; margin-bottom: 30px; }
 .search-input { width: 50%; max-width: 400px; display: inline-block; margin-bottom: 0; }
 .layout-produits { display: flex; gap: 30px; align-items: flex-start; }
@@ -115,10 +135,31 @@ input, select, textarea { width: 100%; padding: 10px; margin-bottom: 15px; borde
 .status-prepa { color: var(--primary-color); font-weight: bold; }
 .status-livre { color: #27A400; font-weight: bold; }
 
-/* Cuisine & Livraison */
+/* Cuisine et Livraison */
 .border-red { border-left: 5px solid #e74c3c; }
 .border-orange { border-left: 5px solid #f39c12; }
 .action-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
+/* Nouveaux utilisateurs */
+.header-title { text-align: center; color: #006233; }
+.main-nav { background-color: var(--secondary-color); padding: 10px; border-radius: 5px; margin-top: 15px; }
+.form-label { display: block; margin-bottom: 5px; }
+.auth-footer { margin-top: 20px; text-align: center; font-size: 0.9rem; }
+.link-secondary-bold { color: var(--secondary-color); font-weight: bold; }
+.link-muted { color: #666; text-decoration: none; }
+.hero { text-align: center; padding: 40px 0; }
+.search-bar-home { max-width: 500px; margin: 20px auto; }
+.justify-center { justify-content: center; }
+.main-small { max-width: 600px; margin: 30px auto; }
+.flex-justify-center { display: flex; justify-content: center; }
+.delivery-card { width: 100%; max-width: 400px; }
+.hr-20 { margin: 20px 0; border: 0; border-top: 1px solid var(--border-color); }
+.filter-title { font-size: 1.2rem; }
+.filter-subtitle { margin-top: 10px; font-size: 1rem; }
+.profile-info-section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+.profile-table { width: 100%; border-collapse: collapse; background: white; }
+.table-header-row { background: var(--primary-color); color: white; }
+
 
 
 @media (max-width: 1200px) {
@@ -127,4 +168,66 @@ input, select, textarea { width: 100%; padding: 10px; margin-bottom: 15px; borde
     h1 { font-size: 50px; }
     .layout-produits { flex-direction: column; }
     .search-input { width: 100%; }
+}
+
+
+/* Messages système */
+.msg-success {
+    color: #27ae60;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.1em;
+}
+.text-success {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+
+/* Page Panier */
+.panier-card {
+    margin: 0 auto;
+    max-width: 600px;
+}
+.panier-table {
+    width: 100%;
+    text-align: left;
+}
+.total-price {
+    color: #e74c3c;
+}
+.flex-buttons {
+    display: flex;
+    gap: 10px;
+}
+.link-panier {
+    color: #f39c12;
+    font-weight: bold;
+}
+.section-full-width {
+    width: 100%;
+}
+
+
+/* Formulaire de Notation */
+.notation-form {
+    margin-top: 5px;
+}
+.notation-select {
+    padding: 2px;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+
+/* Page Admin */
+.admin-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.admin-table th, .admin-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
 }
