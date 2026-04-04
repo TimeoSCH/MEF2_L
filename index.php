@@ -7,28 +7,25 @@
 </head>
 <body>
     <header>
-        <h1 style="text-align: center; color: #006233;">
+        <h1 class="header-title">
             Les délices de fafa 🇲🇦
         </h1>
-        <nav style="background-color: var(--secondary-color); padding: 10px; border-radius: 5px; margin-top: 15px;">
+        <nav class="main-nav">
             <ul>
-                <li><a href="index.html">🏠 Accueil</a></li>
-                <li><a href="produits.html">🍲 La Carte</a></li>
-                <li><a href="inscription.html">📝 Inscription</a></li>
-                <li><a href="connexion.html">🔑 Connexion</a></li>
-                <li><a href="profil.html">👤 Mon Profil</a></li>
-                <li><a href="commandes.html" class="lien-metier">👨‍🍳 Cuisine</a></li>
-                <li><a href="livraison.html" class="lien-metier">🛵 Livraison</a></li>
+                <li><a href="produits.php">🍲 La Carte</a></li>
+                <li><a href="inscription.php">📝 Inscription</a></li>
+                <li><a href="connexion.php">🔑 Connexion</a></li>
+                <li><a href="profil.php">👤 Mon Profil</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section class="hero" style="text-align: center; padding: 40px 0;">
+        <section class="hero">
             <h2>Bienvenue au Maroc</h2>
             <p>Des saveurs authentiques livrées chez vous.</p>
             
-            <div style="max-width: 500px; margin: 20px auto;">
+            <div class="search-bar-home">
                 <input type="text" placeholder="Rechercher un plat (ex: Tajine, Couscous...)">
                 <button class="btn">Rechercher</button>
             </div>
@@ -36,7 +33,7 @@
 
         <section>
             <h3>🔥 Nos Coups de Cœur</h3>
-            <div class="card-grid" style="justify-content: center;">
+            <div class="card-grid justify-center">
                 <article class="card">
                     <img src="couscous.jpg">
                     <h4>Couscous</h4>
