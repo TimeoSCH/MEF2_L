@@ -68,8 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <li><a href="produits.php">🍲 La Carte</a></li>
                 <li><a href="inscription.php">📝 Inscription</a></li>
                 <li><a href="profil.php">👤 Mon Profil</a></li>
-                <li><a href="commandes.php">👨‍🍳 Cuisine</a></li>
-                <li><a href="livraison.php">🛵 Livraison</a></li>
             </ul>
         </nav>
     </header>
