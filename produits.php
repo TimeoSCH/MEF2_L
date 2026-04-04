@@ -78,13 +78,10 @@ if (file_exists("data/plats.txt")) {
         <nav class="main-nav">
             <ul>
                 <li><a href="index.php">🏠 Accueil</a></li>
-                <li><a href="produits.php">🍲 La Carte</a></li>
                 <li><a href="panier.php" class="link-panier">🛒 Mon Panier (<?php echo array_sum(array_column($_SESSION['panier'], 'quantite')); ?>)</a></li>
                 <li><a href="inscription.php">📝 Inscription</a></li>
                 <li><a href="connexion.php">🔑 Connexion</a></li>
                 <li><a href="profil.php">👤 Mon Profil</a></li>
-                <li><a href="commandes.php">👨‍🍳 Cuisine</a></li>
-                <li><a href="livraison.php">🛵 Livraison</a></li>
             </ul>
         </nav>
     </header>
