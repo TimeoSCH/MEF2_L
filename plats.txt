@@ -1,0 +1,15 @@
+E1;entree;Soupe Harira;Soupe traditionnelle aux tomates,boeuf, pois chiches et céleri.;6.00;aucun;harira.jpg
+E2;entree;Pastilla au Poulet;Feuilleté croquant sucré-salé,poulet, amandes et cannelle.;8.50;gluten,fruits a coque;pastilla.jpg
+E3;entree;Zaalouk;Caviar d'aubergine, tomates, épices et huile d'olive.;5.00;aucun;zaalouk.jpg
+P1;plat;Couscous Royal;Semoule fine, agneau et légumes frais.;18.00;gluten;couscous.jpg
+P2;plat;Tajine d'Agneau aux Pruneaux;Mijoté aux amandes grillées et sésame.;16.50;fruits a coque,sesame;tajine.jpg
+P3;plat;Rfissa au Poulet;bouillon de lentilles, oignons, gingembre, coriandre, ras el hanout, poulet et épices douces.;17.00;gluten;rfissa.jpg
+P4;plat;Mrouzia Traditionnelle;Agneau tendre mijoté dans une sauce sucrée-salée, raisins secs, miel et d'épices.;18.50;fruits a coque;mrouzia.jpg
+P5;plat;Assortiment de Briques;3 brick farcies (boeuf ou thon) et oeuf.;4.50;gluten,oeuf,poisson;briques.jpg
+P6;plat;Msemen fait maison;Kefta Cheddar.;8.50;gluten,lait;msemen.jpg
+P7;plat;Bissara;fèves, pois secs, huile d’olive, paprika, ail, oignon, gingembre et cumin.;9.00;aucun;bissara.jpg
+P8;plat;Méchoui;Mouton rôti à la broche accompagné de pomme de terre en persillade.;20.00;aucun;mechoui.jpg
+D1;dessert;5 Cornes de Gazelle;Pâtisserie fine aux amandes et à la fleur d'oranger.;5.00;gluten,fruits a coque;corne.jpg
+D2;dessert;Assortiment de Chebakia;Pâtisserie fondante au miel, sésame et eau de fleur d'oranger.;4.00;gluten,sesame;chebakia.jpg
+B1;boisson;Thé à la Menthe;Le traditionnel thé marocain, servi bien chaud et sucré.;3.00;aucun;the.jpg
+B2;boisson;Boisson Hawaii (1l);La célèbre boisson gazeuse marocaine aux fruits tropicaux.;2.00;aucun;hawaii.jpg

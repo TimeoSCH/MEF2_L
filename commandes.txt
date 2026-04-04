@@ -1,0 +1,3 @@
+1041;shady@email.com;2x Couscous Royal, 1x Thé;39.00;En livraison;livreur@fafa.fr;67 rue de la Paix, Cergy
+1042;jean@email.com;1x Tajine, 1x Chebakia;20.50;A preparer;aucun;12 rue de la Médina, Paris
+1043;marie@email.com;1x Pastilla, 1x Hawaii;10.50;Prete;aucun;9 place de la mairie, Osny

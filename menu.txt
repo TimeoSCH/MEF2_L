@@ -1,0 +1,3 @@
+M1;Menu Express;1 Entrée au choix + 1 Plat (Tajine ou Briques) + 1 Boisson;19.50
+M2;Menu Royal;1 Entrée + 1 Couscous Royal + 1 Dessert + Thé à la menthe;25.00
+M3;Menu Végétarien;Zaalouk + Tajine végétarien aux légumes + Boisson;16.00

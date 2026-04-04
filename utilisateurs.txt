@@ -1,0 +1,10 @@
+admin1@fafa.fr;admin123;admin;Boss;Grand;1 rue de la Direction;0
+admin2@fafa.fr;admin123;admin;Chef;Sous;1 rue de la Direction;0
+cuisine@fafa.fr;cuisto123;restaurateur;Cuisinier;Chef;Cuisine centrale;0
+livreur@fafa.fr;livreur123;livreur;Youssef;Livreur;Sur la route;0
+shady@email.com;shady123;client;Pims;Shady;67 rue de la Paix, Cergy;120
+schlum@email.com;jean123;client;Schlum;Ethan;12 rue de la Médina, Paris;45
+yassine@email.com;ahmed123;client;Mouthatine;Yassine;5 avenue Charles de Gaule, Cergy;10
+lady@email.com;sarah123;client;Lady;Boss;18 rue des fleurs, Pontoise;0
+brm@email.com;marie123;client;Brm;Lyly;9 place de la mairie, Osny;200
+timeo.schlumberger@gmail.com;Tims2107;client;Schlumberger;Timeo;28 rue d'épluches;0
