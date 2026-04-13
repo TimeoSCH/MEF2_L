@@ -1,5 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 session_start();
+
 
 if (!isset($_SESSION['panier'])) {
     $_SESSION['panier'] = [];
@@ -52,6 +55,7 @@ if (file_exists("data/plats.txt")) {
                     'allergene' => $infos[5],
                     'image' => $infos[6]
                 ];
+                
                 if ($item['categorie'] == 'entree') {
                     $entrees[] = $item;
                 } elseif ($item['categorie'] == 'plat') {
@@ -74,7 +78,9 @@ if (file_exists("data/plats.txt")) {
 </head>
 <body>
    <header>
-        <h1 class="header-title">Les délices de fafa 🇲🇦</h1>
+        <h1 class="header-title">
+            Les délices de fafa 🇲🇦
+        </h1>
         <nav class="main-nav">
             <ul>
                 <li><a href="index.php">🏠 Accueil</a></li>
@@ -90,12 +96,18 @@ if (file_exists("data/plats.txt")) {
         <h2 class="text-center mb-20">Notre Carte Marocaine</h2>
         
         <?php if (!empty($message_panier)): ?>
-            <p class="msg-success">
+            <p class="msg-success text-center">
                 <?php echo $message_panier; ?>
             </p>
         <?php endif; ?>
+        
+        <div class="search-container">
+            <input type="text" placeholder="Rechercher un plat, une saveur..." class="search-input">
+            <button class="btn">Chercher</button>
+        </div>
 
         <div class="layout-produits">
+            
             <aside class="filtres">
                 <h3 class="filter-title">Filtrer par</h3>
                 <h4 class="filter-subtitle">Catégories</h4>
@@ -112,7 +124,7 @@ if (file_exists("data/plats.txt")) {
                 <button class="btn w-100 mt-15">Appliquer</button>
             </aside>
 
-            <section class="section-menu section-full-width">
+            <section class="section-menu">
                 
                 <h3 class="section-title">Les Entrées</h3>
                 <div class="card-grid mb-40">
@@ -184,6 +196,7 @@ if (file_exists("data/plats.txt")) {
             </section>
         </div>
     </main>
+
     <footer>
         <p>&copy; 2025-2026 Les délices de fafa - Projet Creative Yumland</p>
     </footer>
