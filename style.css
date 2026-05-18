@@ -12,14 +12,14 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, serif;
     color: var(--text-color);
     line-height: 1.6;
     background-color: var(--bg-color);
     background-image: url('zelij.jpg'), url('zelij.jpg');
     background-position: left top, right top;
     background-repeat: repeat-y, repeat-y;
-    background-size: 340px auto, 340px auto;
+    background-size: 300px auto, 300px auto;
     background-attachment: fixed, fixed;
 }
 

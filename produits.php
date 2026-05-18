@@ -14,14 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_plat'])) {
     $nom = $_POST['nom_plat'];
     $prix = $_POST['prix_plat'];
 
-    $trouve = false;
-    foreach ($_SESSION['panier'] as &$item) {
-        if ($item['id'] == $id) {
-            $item['quantite'] += 1;
+   $trouve = false;
+    foreach ($_SESSION['panier'] as &$item_panier) { // On l'appelle $item_panier
+        if ($item_panier['id'] == $id) {
+            $item_panier['quantite'] += 1;
             $trouve = true;
             break;
         }
     }
+    unset($item_panier); // ON DÉTRUIT LE LIEN FANTÔME ICI !
 
     if (!$trouve) {
         $_SESSION['panier'][] = [
@@ -74,12 +75,18 @@ if (file_exists("data/plats.txt")) {
 <head>
     <meta charset="UTF-8">
     <title>La Carte - Les délices de fafa</title>
-    <link rel="stylesheet" href="style.css">
+    <?php
+    $fichier_css = "style.css"; // Thème par défaut
+    if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
+        $fichier_css = "style-sombre.css";
+    }
+    ?>
+    <link id="theme-style" rel="stylesheet" href="<?php echo $fichier_css; ?>">
 </head>
-<body>
+<body class="page-produits">
    <header>
         <h1 class="header-title">
-            Les délices de fafa 🇲🇦
+            Les délices de Fafa 🇲🇦
         </h1>
         <nav class="main-nav">
             <ul>
@@ -88,6 +95,7 @@ if (file_exists("data/plats.txt")) {
                 <li><a href="inscription.php">📝 Inscription</a></li>
                 <li><a href="connexion.php">🔑 Connexion</a></li>
                 <li><a href="profil.php">👤 Mon Profil</a></li>
+                <li><button onclick="basculerTheme()" style="background:none; border:none; font-size:1.5em; cursor:pointer;" title="Changer le thème">🌗</button></li>
             </ul>
         </nav>
     </header>
@@ -200,5 +208,6 @@ if (file_exists("data/plats.txt")) {
     <footer>
         <p>&copy; 2025-2026 Les délices de fafa - Projet Creative Yumland</p>
     </footer>
+    <script src="script.js"></script>
 </body>
 </html>

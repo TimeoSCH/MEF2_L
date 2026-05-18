@@ -1,0 +1,85 @@
+@import url('style.css');
+
+body {
+    background-color: #08006E;
+    color: #f1f1f1;
+    background-image: url('motif.jpg');
+    line-height: 1.6;
+    background-image: url('motif.jpg'), url('motif.jpg');
+    background-position: left top, right top;
+    background-repeat: repeat-y, repeat-y;
+    background-size: 300px auto, 300px auto;
+    background-attachment: fixed, fixed;
+}
+main, .main-small, .card, .auth-card {
+    background-image: url('marché.jpg');
+    background-color: transparent; 
+}
+
+header {
+    background-color: #7b0000; 
+}
+
+.header-title{
+color :#000000;
+}
+
+.card, .auth-card, .profil-block {
+    background-color: #2c2c2c;
+    border: 1px solid #444;
+    color: #f1f1f1;
+}
+
+.filtres {
+    background-color: #2c2c2c;
+    border-right: 1px solid #444;
+}
+
+.page-index h3{
+    color: #170089;
+}
+
+.page-produits h3{
+    color: #000000;
+}
+
+.page-profil td{
+    color: #000000;
+}
+
+.page-panier td, h3, th{
+    color: #000000;
+}
+
+.total-price {
+    color: #000000;
+}
+
+h2 {
+    color: #170089;
+}
+
+h1{
+    color: #000000;
+}
+ 
+p, h4 {
+    color: #FFE900;
+}
+
+.link-secondary-bold {
+    color: #f39c12;
+}
+.main-nav {
+    background-color: #7b0000; 
+}
+
+.main-nav a {
+    color: #000000; 
+}
+
+.main-nav a:hover {
+    color: #000000; 
+}
+
+

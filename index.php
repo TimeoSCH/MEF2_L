@@ -3,12 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Les délices de fafa - Accueil</title>
-    <link rel="stylesheet" href="style.css">
+    <?php
+    $fichier_css = "style.css"; 
+    if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
+        $fichier_css = "style-sombre.css";
+    }
+    ?>
+    <link id="theme-style" rel="stylesheet" href="<?php echo $fichier_css; ?>">
 </head>
-<body>
+<body class="page-index">
     <header>
         <h1 class="header-title">
-            Les délices de fafa 🇲🇦
+            Les délices de Fafa 🇲🇦
         </h1>
         <nav class="main-nav">
             <ul>
@@ -16,6 +22,7 @@
                 <li><a href="inscription.php">📝 Inscription</a></li>
                 <li><a href="connexion.php">🔑 Connexion</a></li>
                 <li><a href="profil.php">👤 Mon Profil</a></li>
+                <li><button onclick="basculerTheme()" style="background:none; border:none; font-size:1.5em; cursor:pointer;" title="Changer le thème">🌗</button></li>
             </ul>
         </nav>
     </header>
@@ -64,5 +71,6 @@
     <footer>
         <p>&copy; 2025 Les délices de fafa - Projet Creative Yumland</p>
     </footer>
+    <script src="script.js"></script>
 </body>
 </html>

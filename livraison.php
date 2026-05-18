@@ -27,15 +27,23 @@ if (file_exists("data/commandes.txt")) {
 <head>
     <meta charset="UTF-8">
     <title>Livraison - Les délices de fafa</title>
-    <link rel="stylesheet" href="style.css">
+    <?php
+    // On lit le cookie au chargement pour éviter que la page clignote en blanc ! 
+    $fichier_css = "style.css"; // Thème par défaut
+    if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
+        $fichier_css = "style-sombre.css";
+    }
+    ?>
+    <link id="theme-style" rel="stylesheet" href="<?php echo $fichier_css; ?>">
 </head>
 <body>
     <header>
-        <h1 class="header-title">Les délices de fafa 🇲🇦</h1>
+        <h1 class="header-title">Les délices de Fafa 🇲🇦</h1>
         <nav class="main-nav">
             <ul>
                 <li><a href="index.php">🏠 Accueil</a></li>
                 <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+                <li><button onclick="basculerTheme()" style="background:none; border:none; font-size:1.5em; cursor:pointer;" title="Changer le thème">🌗</button></li>
             </ul>
         </nav>
     </header>
@@ -61,5 +69,6 @@ if (file_exists("data/commandes.txt")) {
             <?php endif; ?>
         </div>
     </main>
+    <script src="script.js"></script>
 </body>
 </html>
