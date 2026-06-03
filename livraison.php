@@ -12,7 +12,6 @@ if (file_exists("data/commandes.txt")) {
         $ligne = trim(fgets($fichier));
         if (!empty($ligne)) {
             $infos = explode(";", $ligne);
-            // On cherche la commande assignée à ce livreur précis
             if ($infos[5] == $_SESSION['email'] && $infos[4] == 'En livraison') {
                 $ma_course = $infos;
                 break;
@@ -28,8 +27,7 @@ if (file_exists("data/commandes.txt")) {
     <meta charset="UTF-8">
     <title>Livraison - Les délices de fafa</title>
     <?php
-    // On lit le cookie au chargement pour éviter que la page clignote en blanc ! 
-    $fichier_css = "style.css"; // Thème par défaut
+    $fichier_css = "style.css"; 
     if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
         $fichier_css = "style-sombre.css";
     }
@@ -41,7 +39,6 @@ if (file_exists("data/commandes.txt")) {
         <h1 class="header-title">Les délices de Fafa 🇲🇦</h1>
         <nav class="main-nav">
             <ul>
-                <li><a href="index.php">🏠 Accueil</a></li>
                 <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
                 <li><button onclick="basculerTheme()" style="background:none; border:none; font-size:1.5em; cursor:pointer;" title="Changer le thème">🌗</button></li>
             </ul>
