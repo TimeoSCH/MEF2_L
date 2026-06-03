@@ -3,28 +3,22 @@ session_start();
 $message_succes = "";
 $message_erreur = "";
 
-// 1. Vérifier si le formulaire a été soumis via la méthode POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // 2. Récupérer les données du formulaire
     $nom = trim($_POST['nom']);
     $prenom = trim($_POST['prenom']);
     $email = trim($_POST['email']);
     $adresse = trim($_POST['adresse']);
     $mdp = trim($_POST['password']);
     
-    // On vérifie que les champs ne sont pas vides
     if (!empty($nom) && !empty($prenom) && !empty($email) && !empty($mdp)) {
         
-        // 3. Préparer la ligne de texte avec les séparateurs ";"
-        // Format attendu : email;mot_de_passe;role;nom;prenom;adresse;points
         $nouvelle_ligne = "\n" . $email . ";" . $mdp . ";client;" . $nom . ";" . $prenom . ";" . $adresse . ";0";
         
-        // 4. Ouvrir le fichier en mode "a" (append = ajouter à la fin du fichier)
         $fichier = fopen("data/utilisateurs.txt", "a");
         
         if ($fichier) {
-            fwrite($fichier, $nouvelle_ligne); // Écriture dans le fichier
-            fclose($fichier); // Fermeture du fichier (très important !)
+            fwrite($fichier, $nouvelle_ligne); 
+            fclose($fichier); 
             
             $message_succes = "Votre compte a bien été créé ! Vous pouvez vous connecter.";
         } else {
