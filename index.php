@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -17,14 +20,38 @@
             Les délices de Fafa 🇲🇦
         </h1>
         <nav class="main-nav">
-            <ul>
-                <li><a href="produits.php">🍲 La Carte</a></li>
-                <li><a href="inscription.php">📝 Inscription</a></li>
-                <li><a href="connexion.php">🔑 Connexion</a></li>
-                <li><a href="profil.php">👤 Mon Profil</a></li>
-                <li><button onclick="basculerTheme()" style="background:none; border:none; font-size:1.5em; cursor:pointer;" title="Changer le thème">🌗</button></li>
-            </ul>
-        </nav>
+    <ul>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+            <li><a href="produits.php">🍲 La Carte</a></li>
+            <li><a href="admin.php" class="text-success text-bold">🛡️ Tous les Profils</a></li>
+            <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+
+        <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'client'): ?>
+            <li><a href="index.php">🏠 Accueil</a></li>
+            <li><a href="produits.php">🍲 La Carte</a></li>
+            
+            <?php if (basename($_SERVER['PHP_SELF']) === 'produits.php'): ?>
+                <li>
+                    <a href="panier.php">
+                        🛒 Mon Panier 
+                        <?php echo (isset($_SESSION['panier']) && count($_SESSION['panier']) > 0) ? "(".array_sum(array_column($_SESSION['panier'], 'quantite')).")" : "(0)"; ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+            
+            <li><a href="profil.php">👤 Mon Profil</a></li>
+            <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+
+        <?php else: ?>
+            <li><a href="index.php">🏠 Accueil</a></li>
+            <li><a href="produits.php">🍲 La Carte</a></li>
+            <li><a href="inscription.php">📝 Inscription</a></li>
+            <li><a href="connexion.php">🔑 Connexion</a></li>
+        <?php endif; ?>
+
+        <li><button class="btn-theme" onclick="basculerTheme()" title="Changer le thème">🌗</button></li>
+    </ul>
+</nav>
     </header>
 
     <main>

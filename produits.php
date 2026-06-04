@@ -3,9 +3,71 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 session_start();
 
-
 if (!isset($_SESSION['panier'])) {
     $_SESSION['panier'] = [];
+}
+
+if (isset($_POST['action']) && $_POST['action'] === 'filtrer_asynchrone') {
+    $filtres = json_decode($_POST['filtres'], true);
+    $html_resultat = "";
+    
+    if (file_exists("data/plats.txt")) {
+        $fichier = fopen("data/plats.txt", "r");
+        while (!feof($fichier)) {
+            $ligne = trim(fgets($fichier));
+            if (!empty($ligne)) {
+                $infos = explode(";", $ligne);
+                if (count($infos) >= 7) {
+                    $categorie = strtolower($infos[1]);
+                    $tags = strtolower($infos[5] . ' ' . $infos[3]);
+                    
+                    $correspond_aux_filtres = true;
+                    
+                    if (!empty($filtres)) {
+                        foreach ($filtres as $mot_cle) {
+                            if (strpos($categorie, $mot_cle) === false && strpos($tags, $mot_cle) === false) {
+                                $correspond_aux_filtres = false;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if ($correspond_aux_filtres) {
+                        $prix_format = number_format((float)$infos[4], 2);
+                        $id = htmlspecialchars($infos[0]);
+                        $nom = htmlspecialchars($infos[2]);
+                        $img = htmlspecialchars($infos[6]);
+                        $desc = htmlspecialchars($infos[3]);
+                        
+                        $html_resultat .= "
+                        <article class='card plat-card' data-prix='{$infos[4]}'>
+                            <img src='{$img}' alt='{$nom}'>
+                            <h4>{$nom}</h4>
+                            <p>{$desc}</p>
+                            <p class='mt-10'><strong>{$prix_format} €</strong></p>
+                            <form action='produits.php' method='post'>
+                                <input type='hidden' name='id_plat' value='{$id}'>
+                                <input type='hidden' name='nom_plat' value='{$nom}'>
+                                <input type='hidden' name='prix_plat' value='{$infos[4]}'>
+                                <button type='submit' class='btn w-100 mt-10'>Ajouter</button>
+                            </form>
+                        </article>";
+                    }
+                }
+            }
+        }
+        fclose($fichier);
+    }
+    
+    if (empty($html_resultat)) {
+        $html_resultat = "<p class='text-center w-100'>Aucun plat ne correspond à vos critères. 😔</p>";
+    } else {
+        $html_resultat = "<div class='card-grid mb-40'>" . $html_resultat . "</div>";
+    }
+    
+    header('Content-Type: application/json');
+    echo json_encode(["html" => $html_resultat]);
+    exit();
 }
 
 $message_panier = "";
@@ -14,30 +76,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_plat'])) {
     $nom = $_POST['nom_plat'];
     $prix = $_POST['prix_plat'];
 
-   $trouve = false;
-    foreach ($_SESSION['panier'] as &$item_panier) { // On l'appelle $item_panier
+    $trouve = false;
+    foreach ($_SESSION['panier'] as &$item_panier) { 
         if ($item_panier['id'] == $id) {
             $item_panier['quantite'] += 1;
             $trouve = true;
             break;
         }
     }
-    unset($item_panier); // ON DÉTRUIT LE LIEN FANTÔME ICI !
+    unset($item_panier); 
 
     if (!$trouve) {
-        $_SESSION['panier'][] = [
-            'id' => $id,
-            'nom' => $nom,
-            'prix' => $prix,
-            'quantite' => 1
-        ];
+        $_SESSION['panier'][] = ['id' => $id, 'nom' => $nom, 'prix' => $prix, 'quantite' => 1];
     }
-    
     $message_panier = "✅ " . $nom . " a été ajouté à votre panier !";
 }
 
 $entrees = [];
-$plats = [];
+$plats_principaux = [];
 $desserts_boissons = [];
 
 if (file_exists("data/plats.txt")) {
@@ -52,7 +108,7 @@ if (file_exists("data/plats.txt")) {
                     'categorie' => $infos[1],
                     'nom' => $infos[2],
                     'description' => $infos[3],
-                    'prix' => $infos[4],
+                    'prix' => (float)$infos[4],
                     'allergene' => $infos[5],
                     'image' => $infos[6]
                 ];
@@ -60,7 +116,7 @@ if (file_exists("data/plats.txt")) {
                 if ($item['categorie'] == 'entree') {
                     $entrees[] = $item;
                 } elseif ($item['categorie'] == 'plat') {
-                    $plats[] = $item;
+                    $plats_principaux[] = $item;
                 } elseif ($item['categorie'] == 'dessert' || $item['categorie'] == 'boisson') {
                     $desserts_boissons[] = $item;
                 }
@@ -69,33 +125,41 @@ if (file_exists("data/plats.txt")) {
     }
     fclose($fichier);
 }
+
+$fichier_css = "style.css"; 
+if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
+    $fichier_css = "style-sombre.css";
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>La Carte - Les délices de fafa</title>
-    <?php
-    $fichier_css = "style.css"; // Thème par défaut
-    if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
-        $fichier_css = "style-sombre.css";
-    }
-    ?>
     <link id="theme-style" rel="stylesheet" href="<?php echo $fichier_css; ?>">
 </head>
 <body class="page-produits">
    <header>
-        <h1 class="header-title">
-            Les délices de Fafa 🇲🇦
-        </h1>
+        <h1 class="header-title">Les délices de Fafa 🇲🇦</h1>
         <nav class="main-nav">
             <ul>
-                <li><a href="index.php">🏠 Accueil</a></li>
-                <li><a href="panier.php" class="link-panier">🛒 Mon Panier (<?php echo array_sum(array_column($_SESSION['panier'], 'quantite')); ?>)</a></li>
-                <li><a href="inscription.php">📝 Inscription</a></li>
-                <li><a href="connexion.php">🔑 Connexion</a></li>
-                <li><a href="profil.php">👤 Mon Profil</a></li>
-                <li><button onclick="basculerTheme()" style="background:none; border:none; font-size:1.5em; cursor:pointer;" title="Changer le thème">🌗</button></li>
+                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                    <li><a href="produits.php">🍲 La Carte</a></li>
+                    <li><a href="admin.php" class="text-success text-bold">🛡️ Tous les Profils</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+                <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'client'): ?>
+                    <li><a href="index.php">🏠 Accueil</a></li>
+                    <li><a href="produits.php">🍲 La Carte</a></li>
+                    <li><a href="panier.php">🛒 Mon Panier (<?php echo array_sum(array_column($_SESSION['panier'], 'quantite')); ?>)</a></li>
+                    <li><a href="profil.php">👤 Mon Profil</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+                <?php else: ?>
+                    <li><a href="index.php">🏠 Accueil</a></li>
+                    <li><a href="produits.php">🍲 La Carte</a></li>
+                    <li><a href="inscription.php">📝 Inscription</a></li>
+                    <li><a href="connexion.php">🔑 Connexion</a></li>
+                <?php endif; ?>
+                <li><button class="btn-theme" onclick="basculerTheme()" title="Changer le thème">🌗</button></li>
             </ul>
         </nav>
     </header>
@@ -104,110 +168,162 @@ if (file_exists("data/plats.txt")) {
         <h2 class="text-center mb-20">Notre Carte Marocaine</h2>
         
         <?php if (!empty($message_panier)): ?>
-            <p class="msg-success text-center">
-                <?php echo $message_panier; ?>
-            </p>
+            <p class="msg-success-bold"><?php echo $message_panier; ?></p>
         <?php endif; ?>
         
-        <div class="search-container">
-            <input type="text" placeholder="Rechercher un plat, une saveur..." class="search-input">
-            <button class="btn">Chercher</button>
-        </div>
-
         <div class="layout-produits">
             
             <aside class="filtres">
-                <h3 class="filter-title">Filtrer par</h3>
-                <h4 class="filter-subtitle">Catégories</h4>
-                <ul>
-                    <li><input type="checkbox" id="cat-entrees"> <label for="cat-entrees">Entrées</label></li>
-                    <li><input type="checkbox" id="cat-plats"> <label for="cat-plats">Plats</label></li>
-                    <li><input type="checkbox" id="cat-desserts"> <label for="cat-desserts">Desserts & Boissons</label></li>
-                </ul>
-                <h4 class="filter-subtitle">Allergènes</h4>
-                <ul>
-                    <li><input type="checkbox" id="sans-gluten"> <label for="sans-gluten">Sans Gluten</label></li>
-                    <li><input type="checkbox" id="vegetarien"> <label for="vegetarien">Végétarien</label></li>
-                </ul>
-                <button class="btn w-100 mt-15">Appliquer</button>
+                <h3 class="filter-title">Trier & Filtrer</h3>
+                
+                <hr class="mt-10 mb-10">
+                <h4 class="filter-subtitle text-sm">Trier par :</h4>
+                <select id="tri_produits" class="select-sort" onchange="trierPlats()">
+                    <option value="defaut">Ordre par défaut</option>
+                    <option value="prix_croissant">Prix : Croissant</option>
+                    <option value="prix_decroissant">Prix : Décroissant</option>
+                </select>
+
+                <hr class="mt-10 mb-10">
+
+                <div class="filter-group">
+                    <h4 class="filter-subtitle text-sm">Catégories</h4>
+                    <ul>
+                        <li><input type="checkbox" value="entree" class="filtre-box"> <label>Entrées</label></li>
+                        <li><input type="checkbox" value="plat" class="filtre-box"> <label>Plats</label></li>
+                        <li><input type="checkbox" value="dessert" class="filtre-box"> <label>Desserts</label></li>
+                    </ul>
+                </div>
+
+                <div class="filter-group">
+                    <h4 class="filter-subtitle text-sm">Régimes & Allergènes</h4>
+                    <ul>
+                        <li><input type="checkbox" value="vegetarien" class="filtre-box"> <label>Végétarien</label></li>
+                        <li><input type="checkbox" value="sans-gluten" class="filtre-box"> <label>Sans Gluten</label></li>
+                    </ul>
+                </div>
+                
+                <div class="filter-group">
+                    <h4 class="filter-subtitle text-sm">Saveurs</h4>
+                    <ul>
+                        <li><input type="checkbox" value="sale" class="filtre-box"> <label>Salé</label></li>
+                        <li><input type="checkbox" value="sucre" class="filtre-box"> <label>Sucré</label></li>
+                        <li><input type="checkbox" value="epice" class="filtre-box"> <label>Épicé</label></li>
+                    </ul>
+                </div>
+
+                <button class="btn btn-blue w-100 mt-15" onclick="filtrerAsynchrone()" id="btn-filtre">Appliquer les filtres</button>
             </aside>
 
-            <section class="section-menu">
+            <section class="section-menu" id="conteneur-plats">
                 
-                <h3 class="section-title">Les Entrées</h3>
-                <div class="card-grid mb-40">
-                    <?php foreach ($entrees as $entree): ?>
-                    <article class="card">
-                        <img src="<?php echo $entree['image']; ?>" alt="<?php echo $entree['nom']; ?>">
-                        <h4><?php echo $entree['nom']; ?></h4>
-                        <p><?php echo $entree['description']; ?></p>
-                        <p class="mt-10"><strong><?php echo $entree['prix']; ?> €</strong></p>
-                        
-                        <form action="produits.php" method="post">
-                            <input type="hidden" name="id_plat" value="<?php echo $entree['id']; ?>">
-                            <input type="hidden" name="nom_plat" value="<?php echo $entree['nom']; ?>">
-                            <input type="hidden" name="prix_plat" value="<?php echo $entree['prix']; ?>">
-                            <button type="submit" class="btn w-100 mt-10">Ajouter</button>
-                        </form>
-                    </article>
-                    <?php endforeach; ?>
-                </div>
+                <?php if(!empty($entrees)): ?>
+                    <h3 class="section-title">Les Entrées</h3>
+                    <div class="card-grid mb-40">
+                        <?php foreach ($entrees as $plat): ?>
+                            <?php inclure_carte_plat($plat); ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
 
-                <h3 class="section-title">Les Plats</h3>
-                <div class="card-grid mb-40">
-                    <?php foreach ($plats as $plat): 
-                        $is_coeur = ($plat['id'] == 'P1' || $plat['id'] == 'P2');
-                    ?>
-                    <article class="card <?php echo $is_coeur ? 'card-coeur' : ''; ?>">
-                        <?php if ($is_coeur): ?>
-                            <span class="badge-coeur">❤️ Coup de cœur</span>
-                        <?php endif; ?>
-                        <img src="<?php echo $plat['image']; ?>" alt="<?php echo $plat['nom']; ?>">
-                        <h4><?php echo $plat['nom']; ?></h4>
-                        <p><?php echo $plat['description']; ?></p>
-                        <p class="mt-10"><strong><?php echo $plat['prix']; ?> €</strong></p>
-                        
-                        <form action="produits.php" method="post">
-                            <input type="hidden" name="id_plat" value="<?php echo $plat['id']; ?>">
-                            <input type="hidden" name="nom_plat" value="<?php echo $plat['nom']; ?>">
-                            <input type="hidden" name="prix_plat" value="<?php echo $plat['prix']; ?>">
-                            <button type="submit" class="btn w-100 mt-10">Ajouter</button>
-                        </form>
-                    </article>
-                    <?php endforeach; ?>
-                </div>
+                <?php if(!empty($plats_principaux)): ?>
+                    <h3 class="section-title">Les Plats</h3>
+                    <div class="card-grid mb-40">
+                        <?php foreach ($plats_principaux as $plat): ?>
+                            <?php inclure_carte_plat($plat); ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
 
-                <h3 class="section-title">Les Desserts & Boissons</h3>
-                <div class="card-grid">
-                    <?php foreach ($desserts_boissons as $db): 
-                        $is_coeur = ($db['id'] == 'B1');
-                    ?>
-                    <article class="card <?php echo $is_coeur ? 'card-coeur' : ''; ?>">
-                        <?php if ($is_coeur): ?>
-                            <span class="badge-coeur">❤️ Coup de cœur</span>
-                        <?php endif; ?>
-                        <img src="<?php echo $db['image']; ?>" alt="<?php echo $db['nom']; ?>">
-                        <h4><?php echo $db['nom']; ?></h4>
-                        <p><?php echo $db['description']; ?></p>
-                        <p class="mt-10"><strong><?php echo $db['prix']; ?> €</strong></p>
-                        
-                        <form action="produits.php" method="post">
-                            <input type="hidden" name="id_plat" value="<?php echo $db['id']; ?>">
-                            <input type="hidden" name="nom_plat" value="<?php echo $db['nom']; ?>">
-                            <input type="hidden" name="prix_plat" value="<?php echo $db['prix']; ?>">
-                            <button type="submit" class="btn w-100 mt-10">Ajouter</button>
-                        </form>
-                    </article>
-                    <?php endforeach; ?>
-                </div>
+                <?php if(!empty($desserts_boissons)): ?>
+                    <h3 class="section-title">Les Desserts & Boissons</h3>
+                    <div class="card-grid mb-40">
+                        <?php foreach ($desserts_boissons as $plat): ?>
+                            <?php inclure_carte_plat($plat); ?>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
 
             </section>
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2025-2026 Les délices de fafa - Projet Creative Yumland</p>
-    </footer>
+    <?php
+    function inclure_carte_plat($plat) {
+        $prix_format = number_format($plat['prix'], 2);
+        echo "
+        <article class='card plat-card' data-prix='{$plat['prix']}'>
+            <img src='{$plat['image']}' alt='{$plat['nom']}'>
+            <h4>{$plat['nom']}</h4>
+            <p>{$plat['description']}</p>
+            <p class='mt-10'><strong>{$prix_format} €</strong></p>
+            <form action='produits.php' method='post'>
+                <input type='hidden' name='id_plat' value='{$plat['id']}'>
+                <input type='hidden' name='nom_plat' value='{$plat['nom']}'>
+                <input type='hidden' name='prix_plat' value='{$plat['prix']}'>
+                <button type='submit' class='btn w-100 mt-10'>Ajouter</button>
+            </form>
+        </article>";
+    }
+    ?>
+
+    <script>
+        function trierPlats() {
+            const select = document.getElementById('tri_produits').value;
+            const conteneur = document.getElementById('conteneur-plats');
+            const plats = Array.from(conteneur.getElementsByClassName('plat-card'));
+
+            if (select === 'prix_croissant') {
+                plats.sort((a, b) => parseFloat(a.dataset.prix) - parseFloat(b.dataset.prix));
+                conteneur.innerHTML = '<div class="card-grid mb-40"></div>';
+                const grid = conteneur.querySelector('.card-grid');
+                plats.forEach(plat => grid.appendChild(plat));
+            } else if (select === 'prix_decroissant') {
+                plats.sort((a, b) => parseFloat(b.dataset.prix) - parseFloat(a.dataset.prix));
+                conteneur.innerHTML = '<div class="card-grid mb-40"></div>';
+                const grid = conteneur.querySelector('.card-grid');
+                plats.forEach(plat => grid.appendChild(plat));
+            } else {
+                window.location.reload();
+            }
+        }
+
+        function filtrerAsynchrone() {
+            const checkboxes = document.querySelectorAll('.filtre-box:checked');
+            let valeursCochees = [];
+            checkboxes.forEach((cb) => valeursCochees.push(cb.value));
+
+            if (valeursCochees.length === 0) {
+                window.location.reload();
+                return;
+            }
+
+            const btn = document.getElementById('btn-filtre');
+            btn.innerText = "Recherche... ⏳";
+
+            let formData = new FormData();
+            formData.append('action', 'filtrer_asynchrone');
+            formData.append('filtres', JSON.stringify(valeursCochees));
+
+            fetch('produits.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('conteneur-plats').innerHTML = data.html;
+                btn.innerText = "Appliquer les filtres";
+                
+                if (document.getElementById('tri_produits').value !== 'defaut') {
+                    trierPlats();
+                }
+            })
+            .catch(error => {
+                alert('Erreur réseau.');
+                btn.innerText = "Appliquer les filtres";
+            });
+        }
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

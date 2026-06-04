@@ -7,5 +7,5 @@ schlum@email.com;sch123;client;Schlum;Ethan;12 rue de la Médina, Paris;45;0
 yassine@email.com;yass123;client;Mouthatine;Yassine;5 avenue Charles de Gaule, Cergy;10;0
 lady@email.com;lady123;client;Lady;Boss;18 rue des fleurs, Pontoise;0;0
 brm@email.com;brm123;client;Brm;Lyly;9 place de la mairie, Osny;200;0
-timeo.schlumberger@gmail.com;Tims2107;client;Schlumberger;Timeo;28 rue d'épluches;0;0
+timeo.schlumberger@gmail.com;Tims2107;client;Schlumberger;Timeo;28 rue d'épluches;26;0
 odd@gmail.com;timleplusbeau;client;Abdelkrim;Aaziz;67 rue du sixsaiveune;0;0

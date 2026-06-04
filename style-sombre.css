@@ -21,7 +21,7 @@ header {
 }
 
 .header-title{
-color :#000000;
+    color :#000000;
 }
 
 .card, .auth-card, .profil-block {
@@ -83,3 +83,48 @@ p, h4 {
 }
 
 
+.profile-table {
+    background-color: rgba(0, 0, 0, 0.4) ; 
+    color: #ffffff ; 
+}
+.profile-table th, .profile-table td {
+    border: 1px solid #444 ; 
+}
+
+.badge {
+    background-color: #FFE900 !important; 
+    color: #000000 ; 
+    font-weight: bold ;
+    border: none ;
+}
+
+.text-muted-sm {
+    color: #cccccc ; 
+}
+
+
+.page-admin h2, .page-admin p {
+    color: #FFE900 ; 
+}
+
+.page-admin .profile-table {
+    background-color: rgba(0, 0, 0, 0.8) ; 
+}
+
+.page-admin .profile-table th {
+    background-color: #006233 ; 
+    color: #ffffff ;
+}
+
+.page-admin .profile-table td {
+    color: #ffffff ; 
+    border: 1px solid #555 ;
+}
+
+.page-admin .profile-table td strong {
+    color: #FFE900 ; 
+}
+
+.page-admin .ligne-bloquee td {
+    background-color: rgba(255, 0, 0, 0.3) ; 
+}

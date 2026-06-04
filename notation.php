@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Notation - Les délices de fafa</title>
     <?php
-    $fichier_css = "style.css"; // Thème par défaut
+    $fichier_css = "style.css"; 
     if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
         $fichier_css = "style-sombre.css";
     }
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <ul>
                 <li><a href="index.php">🏠 Accueil</a></li>
                 <li><a href="profil.php">👤 Mon Profil</a></li>
-                <li><button onclick="basculerTheme()" style="background:none; border:none; font-size:1.5em; cursor:pointer;" title="Changer le thème">🌗</button></li>
+                <li><button class="btn-theme" onclick="basculerTheme()" title="Changer le thème">🌗</button></li>
             </ul>
         </nav>
     </header>

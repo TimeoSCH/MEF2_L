@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         while (!feof($fichier)) {
             $ligne = fgets($fichier);
-            $ligne = trim($ligne); // Enlever les espaces et sauts de ligne
+            $ligne = trim($ligne); 
             
             if (!empty($ligne)) {
                 $infos = explode(";", $ligne);
@@ -29,7 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['adresse'] = $infos[5];
                     $_SESSION['points'] = $infos[6];
                     
-                    if ($_SESSION['role'] == 'restaurateur') {
+                    if ($_SESSION['role'] == 'admin') {
+                        header("Location: admin.php");
+                    } elseif ($_SESSION['role'] == 'restaurateur') {
                         header("Location: commandes.php");
                     } elseif ($_SESSION['role'] == 'livreur') {
                         header("Location: livraison.php");
@@ -56,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Connexion - Les délices de fafa</title>
     <?php 
-    $fichier_css = "style.css"; // Thème par défaut
+    $fichier_css = "style.css"; 
     if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
         $fichier_css = "style-sombre.css";
     }
@@ -69,14 +71,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Les délices de Fafa 🇲🇦
         </h1>
         <nav class="main-nav">
-            <ul>
-                <li><a href="index.php">🏠 Accueil</a></li>
-                <li><a href="produits.php">🍲 La Carte</a></li>
-                <li><a href="inscription.php">📝 Inscription</a></li>
-                <li><a href="profil.php">👤 Mon Profil</a></li>
-                <li><button onclick="basculerTheme()" style="background:none; border:none; font-size:1.5em; cursor:pointer;" title="Changer le thème">🌗</button></li>
-            </ul>
-        </nav>
+    <ul>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+            <li><a href="produits.php">🍲 La Carte</a></li>
+            <li><a href="admin.php" class="text-success text-bold">🛡️ Tous les Profils</a></li>
+            <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+
+        <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'client'): ?>
+            <li><a href="index.php">🏠 Accueil</a></li>
+            <li><a href="produits.php">🍲 La Carte</a></li>
+            
+            <?php if (basename($_SERVER['PHP_SELF']) === 'produits.php'): ?>
+                <li>
+                    <a href="panier.php">
+                        🛒 Mon Panier 
+                        <?php echo (isset($_SESSION['panier']) && count($_SESSION['panier']) > 0) ? "(".array_sum(array_column($_SESSION['panier'], 'quantite')).")" : "(0)"; ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+            
+            <li><a href="profil.php">👤 Mon Profil</a></li>
+            <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+
+        <?php else: ?>
+            <li><a href="index.php">🏠 Accueil</a></li>
+            <li><a href="produits.php">🍲 La Carte</a></li>
+            <li><a href="inscription.php">📝 Inscription</a></li>
+            <li><a href="connexion.php">🔑 Connexion</a></li>
+        <?php endif; ?>
+
+        <li><button class="btn-theme" onclick="basculerTheme()" title="Changer le thème">🌗</button></li>
+    </ul>
+</nav>
     </header>
 
     <main class="flex-center auth-main">
@@ -97,7 +123,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="mb-20">
                     <label for="password" class="form-label">Mot de passe :</label>
-                    <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
+                        <button type="button" class="btn-eye" onclick="togglePassword('password')" title="Afficher/Cacher">👁️</button>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn w-100">Se connecter</button>
@@ -115,5 +144,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p>&copy; 2025-2026 Les délices de fafa - Projet Creative Yumland</p>
     </footer>
     <script src="script.js"></script>
+    <script>
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+            } else {
+                input.type = "password";
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,3 +1,5 @@
-1041;shady@email.com;2x Couscous Royal, 1x Thé;39.00;En livraison;livreur@fafa.fr;67 rue de la Paix, Cergy
+1041;shady@email.com;2x Couscous Royal, 1x Thé;39.00;Livree;livreur@fafa.fr;67 rue de la Paix, Cergy
 1042;jean@email.com;1x Tajine, 1x Chebakia;20.50;A preparer;aucun;12 rue de la Médina, Paris
-1043;marie@email.com;1x Pastilla, 1x Hawaii;10.50;Prete;aucun;9 place de la mairie, Osny
+1043;marie@email.com;1x Pastilla, 1x Hawaii;10.50;Livree;aucun;9 place de la mairie, Osny
+9036;timeo.schlumberger@gmail.com;1x Pastilla au Poulet, 1x Msemen fait maison, 1x Boisson Hawaii (1l);19;En livraison;livreur@fafa.fr;28 rue d'épluches3581;timeo.schlumberger@gmail.com;1x Couscous Royal, 1x Msemen fait maison;26.5;A preparer;aucun;28 rue d'épluches
+7148;timeo.schlumberger@gmail.com;1x Méchoui, 1x Boisson Hawaii (1l), 1x Couscous Royal;40;A preparer;livreur@fafa.fr;28 rue d'épluches

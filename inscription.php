@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Inscription - Les délices de fafa</title>
     <?php
-    $fichier_css = "style.css"; // Thème par défaut
+    $fichier_css = "style.css"; 
     if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
         $fichier_css = "style-sombre.css";
     }
@@ -48,24 +48,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Les délices de Fafa 🇲🇦
         </h1>
         <nav class="main-nav">
-            <ul>
-                <li><a href="index.php">🏠 Accueil</a></li>
-                <li><a href="produits.php">🍲 La Carte</a></li>
-                <li><a href="connexion.php">🔑 Connexion</a></li>
-                <li><a href="profil.php">👤 Mon Profil</a></li>
-                <li><button onclick="basculerTheme()" style="background:none; border:none; font-size:1.5em; cursor:pointer;" title="Changer le thème">🌗</button></li>
-            </ul>
-        </nav>
+    <ul>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+            <li><a href="produits.php">🍲 La Carte</a></li>
+            <li><a href="admin.php" class="text-success text-bold">🛡️ Tous les Profils</a></li>
+            <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+
+        <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'client'): ?>
+            <li><a href="index.php">🏠 Accueil</a></li>
+            <li><a href="produits.php">🍲 La Carte</a></li>
+            
+            <?php if (basename($_SERVER['PHP_SELF']) === 'produits.php'): ?>
+                <li>
+                    <a href="panier.php">
+                        🛒 Mon Panier 
+                        <?php echo (isset($_SESSION['panier']) && count($_SESSION['panier']) > 0) ? "(".array_sum(array_column($_SESSION['panier'], 'quantite')).")" : "(0)"; ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+            
+            <li><a href="profil.php">👤 Mon Profil</a></li>
+            <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+
+        <?php else: ?>
+            <li><a href="index.php">🏠 Accueil</a></li>
+            <li><a href="produits.php">🍲 La Carte</a></li>
+            <li><a href="inscription.php">📝 Inscription</a></li>
+            <li><a href="connexion.php">🔑 Connexion</a></li>
+        <?php endif; ?>
+
+        <li><button class="btn-theme" onclick="basculerTheme()" title="Changer le thème">🌗</button></li>
+    </ul>
+</nav>
     </header>
     <main class="main-small">
         
         <h2 class="text-center mb-20">Créer un compte</h2>
 
         <?php if (!empty($message_succes)): ?>
-            <p class="text-center mb-15" style="color: #27ae60; font-weight: bold;">
-                <?php echo $message_succes; ?> <br>
+            <div class="msg-success">
+                <p><?php echo $message_succes; ?></p>
                 <a href="connexion.php" class="btn mt-10">Aller à la connexion</a>
-            </p>
+            </div>
         <?php endif; ?>
 
         <?php if (!empty($message_erreur)): ?>

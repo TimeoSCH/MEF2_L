@@ -55,12 +55,16 @@ footer {
 h1 { font-size: 100px; font-weight: bold; text-align: center; color: #007C08; }
 h2, h3, h4 { color: var(--primary-color); margin-bottom: 1rem; }
 .text-center { text-align: center; }
+.text-right { text-align: right; }
 .logo-drapeau { height: 35px; vertical-align: middle; }
 hr { border: 0; border-top: 1px solid var(--border-color); margin: 15px 0; }
 
+/* Marges et Utilitaires */
+.mt-5 { margin-top: 5px; }
 .mt-10 { margin-top: 10px; }
 .mt-15 { margin-top: 15px; }
 .mt-20 { margin-top: 20px; }
+.mt-25 { margin-top: 25px; }
 .mt-30 { margin-top: 30px; }
 .mb-5 { margin-bottom: 5px; }
 .mb-10 { margin-bottom: 10px; }
@@ -70,11 +74,14 @@ hr { border: 0; border-top: 1px solid var(--border-color); margin: 15px 0; }
 .mb-40 { margin-bottom: 40px; }
 .w-100 { width: 100%; }
 
+/* Navigation */
 nav ul { list-style: none; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 0; padding: 0; }
 nav a { color: var(--white); text-decoration: none; font-weight: bold; padding: 5px 10px; }
 nav a:hover { color: var(--accent-color); }
 .lien-metier { color: var(--accent-color); }
+.btn-theme { background: none; border: none; font-size: 1.5em; cursor: pointer; } /* Bouton Thème */
 
+/* Boutons classiques */
 .btn { display: inline-block; background-color: var(--primary-color); color: var(--white); padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; text-align: center; font-weight: bold; }
 .btn:hover { background-color: #1a7000; }
 .btn-blue { background-color: #3498db; }
@@ -82,29 +89,25 @@ nav a:hover { color: var(--accent-color); }
 .btn-red { background-color: var(--secondary-color); }
 .btn-red:hover { background-color: #8a0000; }
 .btn-green { background-color: #27ae60; }
+.btn-block { display: block; text-align: center; text-decoration: none; }
+.btn-sm { padding: 5px 10px; font-size: 0.9em; }
+.btn-orange { background-color: #f39c12; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; }
+.btn-orange:hover { background-color: #e67e22; }
+.btn-green-large { width: 100%; padding: 12px; background-color: #27ae60; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 1.1em; cursor: pointer; }
 
+/* Formulaires */
 input, select, textarea { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; background: white; }
+.input-sm { width: 100%; padding: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; }
+.form-label { display: block; margin-bottom: 5px; }
 
-
-
-/* ACCUEIL */
-
+/* ACCUEIL & STRUCTURE GÉNÉRALE */
 .hero { text-align: center; padding: 40px 0; }
 .search-bar-home { max-width: 500px; margin: 20px auto; }
 .justify-center { justify-content: center; }
-
 .header-title { text-align: center; color: #006233; }
 .main-nav { background-color: var(--secondary-color); padding: 10px; border-radius: 5px; margin-top: 15px; }
-
 .main-small { max-width: 600px; margin: 30px auto; }
 .flex-justify-center { display: flex; justify-content: center; }
-.delivery-card { width: 100%; max-width: 400px; }
-.hr-20 { margin: 20px 0; border: 0; border-top: 1px solid var(--border-color); }
-.filter-title { font-size: 1.2rem; }
-.filter-subtitle { margin-top: 10px; font-size: 1rem; }
-.profile-info-section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-.profile-table { width: 100%; border-collapse: collapse; background: white; }
-.table-header-row { background: var(--primary-color); color: white; }
 
 /* Produits */
 .search-container { text-align: center; margin-bottom: 30px; }
@@ -115,7 +118,7 @@ input, select, textarea { width: 100%; padding: 10px; margin-bottom: 15px; borde
 .section-menu { flex: 1; }
 .section-title { border-bottom: 2px solid var(--accent-color); padding-bottom: 5px; color: var(--primary-color); margin-bottom: 15px; }
 
-/* Cartes (Plats) */
+/* Cartes */
 .card-grid { display: flex; flex-wrap: wrap; gap: 20px; }
 .card { background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; width: 300px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.2s; }
 .card:hover { transform: translateY(-5px); border-color: var(--accent-color); }
@@ -127,40 +130,61 @@ input, select, textarea { width: 100%; padding: 10px; margin-bottom: 15px; borde
 .flex-center { display: flex; justify-content: center; align-items: center; }
 .auth-main { min-height: 70vh; }
 .auth-card { width: 100%; max-width: 450px; padding: 40px; }
-
-/* Profil */
-.profil-container { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 30px; }
-.profil-block { flex: 1; min-width: 300px; background: rgba(255,255,255,0.95); padding: 20px; border-radius: 8px; border: 1px solid #ccc; }
-.commande-item { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
-.status-prepa { color: var(--primary-color); font-weight: bold; }
-.status-livre { color: #27A400; font-weight: bold; }
-
-/* Cuisine et Livraison */
-.border-red { border-left: 5px solid #e74c3c; }
-.border-orange { border-left: 5px solid #f39c12; }
-.action-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-
-/* Nouveaux utilisateurs */
-.header-title { text-align: center; color: #006233; }
-.main-nav { background-color: var(--secondary-color); padding: 10px; border-radius: 5px; margin-top: 15px; }
-.form-label { display: block; margin-bottom: 5px; }
 .auth-footer { margin-top: 20px; text-align: center; font-size: 0.9rem; }
 .link-secondary-bold { color: var(--secondary-color); font-weight: bold; }
+.no-underline { text-decoration: none; }
 .link-muted { color: #666; text-decoration: none; }
-.hero { text-align: center; padding: 40px 0; }
-.search-bar-home { max-width: 500px; margin: 20px auto; }
-.justify-center { justify-content: center; }
-.main-small { max-width: 600px; margin: 30px auto; }
-.flex-justify-center { display: flex; justify-content: center; }
-.delivery-card { width: 100%; max-width: 400px; }
-.hr-20 { margin: 20px 0; border: 0; border-top: 1px solid var(--border-color); }
-.filter-title { font-size: 1.2rem; }
-.filter-subtitle { margin-top: 10px; font-size: 1rem; }
-.profile-info-section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+
+/* Profil & Admin & Tableaux */
+.profil-container { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 30px; }
+.profil-block { flex: 1; min-width: 300px; background: rgba(255,255,255,0.95); padding: 20px; border-radius: 8px; border: 1px solid #ccc; }
 .profile-table { width: 100%; border-collapse: collapse; background: white; }
 .table-header-row { background: var(--primary-color); color: white; }
+.profile-table th, .profile-table td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+.badge { display: inline-block; padding: 4px 8px; background: #eee; border-radius: 4px; font-size: 0.85em; }
 
+/* Messages système & Textes*/
+.msg-success { color: #27ae60; font-weight: bold; margin-bottom: 15px; text-align: center; font-size: 1.1em; line-height: 1.5; }
+.msg-success-bold { color: #27ae60; text-align: center; font-weight: bold; margin-bottom: 15px; }
+.text-success { color: #27ae60; font-weight: bold; }
+.text-success-normal { color: #27ae60; }
+.text-sm { font-size: 0.9em; }
+.text-muted-sm { font-size: 0.85em; color: #777; }
+.text-bold { font-weight: bold; }
 
+/* Profil & Panier */
+.fidelite-box { background: rgba(243, 156, 18, 0.15); padding: 10px; border-radius: 5px; }
+.fidelite-score { font-size: 1.2em; color: #f39c12; font-weight: bold; }
+.fidelite-promo-box { background: rgba(243, 156, 18, 0.1); border: 1px dashed #f39c12; padding: 15px; margin-top: 20px; border-radius: 8px; text-align: center; }
+
+/* Paiement & Prix */
+.card-paiement { max-width: 500px; margin: 0 auto; padding: 20px; }
+.text-barre { text-decoration: line-through; color: gray; }
+.total-price-large { color: black; font-size: 1.4em; font-weight: bold; }
+.text-price-red { font-size: 1.5em; color: #e74c3c; font-weight: bold; }
+.resume-commande-box { background-color: rgba(128,128,128,0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.1); }
+.input-bancaire { background-color: rgba(0,0,0,0.05); width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc; text-align: center; font-size: 1.1em; font-weight: bold; }
+
+/* Espace Livreur */
+.livreur-main { padding: 10px; font-size: 1.1em; }
+.info-box { background-color: rgba(128, 128, 128, 0.15); padding: 15px; border-radius: 8px; border-left: 5px solid #e67e22; margin-bottom: 20px; }
+.text-big { font-size: 1.3em; font-weight: bold; color: #e67e22; }
+.btn-xxl { display: block; width: 100%; padding: 22px 10px; margin: 20px 0; font-size: 1.3em; font-weight: bold; border-radius: 12px; text-align: center; text-decoration: none; border: none; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+.btn-gps { background-color: #34495e; color: white; }
+.btn-tel { background-color: #2980b9; color: white; }
+.btn-valid { background-color: #27ae60; color: white; padding: 30px 10px; font-size: 1.5em; }
+
+/* Espace Admin */
+.ligne-bloquee { opacity: 0.5; background-color: rgba(255,0,0,0.1); }
+.select-sm { margin-top: 5px; font-size: 0.8em; width: auto; padding: 5px; }
+
+.password-wrapper { display: flex; align-items: center; border: 1px solid #ccc; border-radius: 4px; background: white; margin-bottom: 15px; }
+.password-wrapper input { border: none; margin-bottom: 0; border-radius: 4px 0 0 4px; flex-grow: 1; }
+.btn-eye { background: none; border: none; padding: 10px; cursor: pointer; font-size: 1.2em; color: #555; }
+
+/* Nouveaux tris et filtres */
+.select-sort { width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid var(--primary-color); }
+.filter-group { margin-bottom: 15px; }
 
 @media (max-width: 1200px) {
     body { background-image: none; }
@@ -168,66 +192,4 @@ input, select, textarea { width: 100%; padding: 10px; margin-bottom: 15px; borde
     h1 { font-size: 50px; }
     .layout-produits { flex-direction: column; }
     .search-input { width: 100%; }
-}
-
-
-/* Messages système */
-.msg-success {
-    color: #27ae60;
-    font-weight: bold;
-    margin-bottom: 15px;
-    text-align: center;
-    font-size: 1.1em;
-}
-.text-success {
-    color: #27ae60;
-    font-weight: bold;
-}
-
-
-/* Page Panier */
-.panier-card {
-    margin: 0 auto;
-    max-width: 600px;
-}
-.panier-table {
-    width: 100%;
-    text-align: left;
-}
-.total-price {
-    color: #e74c3c;
-}
-.flex-buttons {
-    display: flex;
-    gap: 10px;
-}
-.link-panier {
-    color: #f39c12;
-    font-weight: bold;
-}
-.section-full-width {
-    width: 100%;
-}
-
-
-/* Formulaire de Notation */
-.notation-form {
-    margin-top: 5px;
-}
-.notation-select {
-    padding: 2px;
-    width: 100%;
-    margin-bottom: 0;
-}
-
-
-/* Page Admin */
-.admin-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-.admin-table th, .admin-table td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
 }
