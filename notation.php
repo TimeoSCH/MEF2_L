@@ -3,7 +3,6 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 session_start();
 
-// Sécurité : Seul un client, un VIP ou un Premium peut noter
 if (!isset($_SESSION['role']) || !in_array(strtolower(trim($_SESSION['role'])), ['client', 'vip', 'premium']) || !isset($_SESSION['email'])) {
     header("Location: connexion.php");
     exit();
@@ -14,14 +13,12 @@ $erreur = "";
 $fichier_cmd = "data/commandes.txt";
 $fichier_notations = "data/notations.txt";
 
-// Récupération de l'ID de la commande (soit par l'URL, soit par le formulaire caché)
 $id_commande = isset($_GET['id']) ? trim($_GET['id']) : (isset($_POST['id_commande']) ? trim($_POST['id_commande']) : null);
 
 if (!$id_commande) {
     die("Erreur : Aucune commande spécifiée.");
 }
 
-// 1. Vérifier que la commande existe, appartient au client, et est "Livree"
 $commande_valide = false;
 $date_commande = "Inconnue";
 if (file_exists($fichier_cmd)) {
@@ -29,11 +26,10 @@ if (file_exists($fichier_cmd)) {
     foreach ($lignes as $ligne) {
         $cols = explode(";", $ligne);
         if (count($cols) >= 5 && trim($cols[0]) === $id_commande) {
-            // Vérifie l'appartenance et le statut
+ 
             if (trim($cols[1]) === $_SESSION['email']) {
                 if (strtolower(trim($cols[4])) === 'livree') {
                     $commande_valide = true;
-                    // On simule une date car on n'a pas la date dans commandes.txt (ou on prend le moment si c'est prévu)
                     $date_commande = isset($cols[7]) ? trim($cols[7]) : "Récente";
                 } else {
                     $erreur = "Cette commande n'est pas encore livrée, vous ne pouvez pas la noter.";
@@ -48,7 +44,6 @@ if (file_exists($fichier_cmd)) {
     $erreur = "Fichier des commandes introuvable.";
 }
 
-// 2. Vérifier si la commande a DÉJÀ été notée (1 seule note par commande exigée)
 $deja_note = false;
 if (file_exists($fichier_notations)) {
     $lignes_notations = file($fichier_notations, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -62,18 +57,16 @@ if (file_exists($fichier_notations)) {
     }
 }
 
-// 3. Traitement du formulaire (Sauvegarde de la note)
 if ($_SERVER["REQUEST_METHOD"] == "POST" && $commande_valide && !$deja_note && empty($erreur)) {
     $note = trim($_POST['note']);
-    $commentaire = trim(str_replace(";", ",", $_POST['commentaire'])); // On enlève les ';' pour ne pas casser le fichier TXT
+    $commentaire = trim(str_replace(";", ",", $_POST['commentaire'])); 
     $date_avis = date("d/m/Y H:i");
 
-    // Format : ID_COMMANDE ; EMAIL_CLIENT ; NOTE ; COMMENTAIRE ; DATE
     $nouvel_avis = "\n" . $id_commande . ";" . $_SESSION['email'] . ";" . $note . ";" . $commentaire . ";" . $date_avis;
     file_put_contents($fichier_notations, $nouvel_avis, FILE_APPEND);
     
     $message = "✅ Merci pour votre évaluation ! Votre avis a bien été enregistré.";
-    $deja_note = true; // Pour cacher le formulaire après validation
+    $deja_note = true; 
 }
 
 $fichier_css = "style.css"; 
