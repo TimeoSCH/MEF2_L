@@ -6,10 +6,9 @@ if (isset($_SESSION['email']) && file_exists("data/utilisateurs.txt")) {
     foreach ($lignes_verif as $ligne) {
         $cols = explode(";", $ligne);
         if (trim($cols[0]) === $_SESSION['email']) {
-            // Si la colonne 8 (index 7) existe et vaut 'bloque'
             if (isset($cols[7]) && trim($cols[7]) === 'bloque') {
-                session_destroy(); // On détruit sa session
-                header("Location: connexion.php?erreur=bloque"); // On l'éjecte vers la page de connexion
+                session_destroy(); 
+                header("Location: connexion.php?erreur=bloque"); 
                 exit();
             }
         }
@@ -43,7 +42,6 @@ foreach ($_SESSION['panier'] as $item) {
     $total_panier += ($item['prix'] * $item['quantite']);
 }
 
-// --- NOUVEAU : VÉRIFICATION DU STATUT VIP/PREMIUM ---
 $role_client = 'client';
 $points_disponibles = 0;
 if (isset($_SESSION['email']) && file_exists("data/utilisateurs.txt")) {
@@ -58,12 +56,11 @@ if (isset($_SESSION['email']) && file_exists("data/utilisateurs.txt")) {
     }
 }
 
-// Application du pourcentage de remise selon le rôle
 $pourcentage_remise = 0;
 if ($role_client === 'vip') {
-    $pourcentage_remise = 0.20; // 20%
+    $pourcentage_remise = 0.20; 
 } elseif ($role_client === 'premium') {
-    $pourcentage_remise = 0.10; // 10%
+    $pourcentage_remise = 0.10; 
 }
 
 $montant_remise_statut = $total_panier * $pourcentage_remise;
