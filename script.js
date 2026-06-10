@@ -6,7 +6,6 @@ function basculerTheme() {
     let urlActuelle = link.getAttribute('href') || link.href;
     let cacheBuster = "?t=" + new Date().getTime();
 
-    // S'il détecte le mot "sombre" dans le nom du fichier
     if (urlActuelle.indexOf('sombre') !== -1) {
         link.setAttribute('href', 'style.css' + cacheBuster);
     } else {
@@ -17,7 +16,7 @@ function basculerTheme() {
     document.cookie = "theme=" + theme + "; path=/; max-age=" + (60*60*24*30);
 }
 async function sauvegarderProfilAjax(event) {
-    event.preventDefault(); // Annule le rechargement brutal de la page
+    event.preventDefault(); 
     
     const form = event.target;
     const formData = new FormData(form);
@@ -58,7 +57,6 @@ async function bloquerUtilisateurAjax(email, boutonElement) {
         const result = await response.json();
         
         if(result.success) {
-            // Mise à jour visuelle du bouton SANS recharger la page
             boutonElement.textContent = 'Bloqué 🚫';
             boutonElement.classList.replace('btn-red', 'btn-muted'); 
             boutonElement.disabled = true;
