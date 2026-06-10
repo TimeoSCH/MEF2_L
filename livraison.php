@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['terminer_livraison']) 
     foreach ($lignes_cmd as $ligne) {
         $cols = explode(";", $ligne);
         if (trim($cols[0]) === $commande_en_cours['id']) {
-            $cols[4] = 'Livree'; // Le statut passe à "Livrée"
+            $cols[4] = 'Livree'; 
         }
         $nouvelles_lignes[] = implode(";", $cols);
     }
