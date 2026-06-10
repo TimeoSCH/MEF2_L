@@ -219,7 +219,6 @@ p, h4 {
     background-color: #219653;
 }
 
-/* Badges spécifiques à la commande */
 .badge-priorite {
     color: #FFE900;
     font-weight: bold;
@@ -260,7 +259,7 @@ p, h4 {
     background-color: rgba(0, 0, 0, 0.8) !important;
 }
 .admin-table {
-    width: 100% !important; /* Force le tableau à prendre toute la largeur */
+    width: 100% !important; 
     min-width: 800px;
     border-collapse: collapse;
 }
@@ -291,8 +290,8 @@ p, h4 {
     padding: 8px 10px;
     border-radius: 4px;
     border: 1px solid #555;
-    width: 140px !important; /* Empêche le menu d'être écrasé */
-    background-color: #2c2c2c !important; /* Fond sombre pour le menu */
+    width: 140px !important; 
+    background-color: #2c2c2c !important; 
     color: white !important;
     cursor: pointer;
     font-size: 0.9em;
@@ -308,7 +307,7 @@ p, h4 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 130px !important; /* Taille uniforme pour les boutons */
+    width: 130px !important; 
     text-align: center;
     display: inline-block;
     transition: background-color 0.3s;
