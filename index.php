@@ -1,5 +1,20 @@
 <?php
 session_start();
+
+if (isset($_SESSION['email']) && file_exists("data/utilisateurs.txt")) {
+    $lignes_verif = file("data/utilisateurs.txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lignes_verif as $ligne) {
+        $cols = explode(";", $ligne);
+        if (trim($cols[0]) === $_SESSION['email']) {
+            // Si la colonne 8 (index 7) existe et vaut 'bloque'
+            if (isset($cols[7]) && trim($cols[7]) === 'bloque') {
+                session_destroy(); // On détruit sa session
+                header("Location: connexion.php?erreur=bloque"); // On l'éjecte vers la page de connexion
+                exit();
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -20,38 +35,50 @@ session_start();
             Les délices de Fafa 🇲🇦
         </h1>
         <nav class="main-nav">
-    <ul>
-        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-            <li><a href="produits.php">🍲 La Carte</a></li>
-            <li><a href="admin.php" class="text-success text-bold">🛡️ Tous les Profils</a></li>
-            <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+            <ul>
+                <?php 
+                $role_nav = isset($_SESSION['role']) ? strtolower(trim($_SESSION['role'])) : '';
+                
+                if ($role_nav === 'admin'): 
+                ?>
+                    <li><a href="produits.php">🍲 La Carte</a></li>
+                    <li><a href="admin.php" class="text-success text-bold">🛡️ Tous les Profils</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
 
-        <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'client'): ?>
-            <li><a href="index.php">🏠 Accueil</a></li>
-            <li><a href="produits.php">🍲 La Carte</a></li>
-            
-            <?php if (basename($_SERVER['PHP_SELF']) === 'produits.php'): ?>
-                <li>
-                    <a href="panier.php">
-                        🛒 Mon Panier 
-                        <?php echo (isset($_SESSION['panier']) && count($_SESSION['panier']) > 0) ? "(".array_sum(array_column($_SESSION['panier'], 'quantite')).")" : "(0)"; ?>
-                    </a>
-                </li>
-            <?php endif; ?>
-            
-            <li><a href="profil.php">👤 Mon Profil</a></li>
-            <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+                <?php elseif (in_array($role_nav, ['client', 'vip', 'premium'])): ?>
+                    <li><a href="index.php">🏠 Accueil</a></li>
+                    <li><a href="produits.php">🍲 La Carte</a></li>
+                    
+                    <?php if (basename($_SERVER['PHP_SELF']) === 'produits.php'): ?>
+                        <li>
+                            <a href="panier.php" class="lien-panier-actif">
+                                🛒 Mon Panier 
+                                <?php echo (isset($_SESSION['panier']) && is_array($_SESSION['panier']) && count($_SESSION['panier']) > 0) ? "(".array_sum(array_column($_SESSION['panier'], 'quantite')).")" : "(0)"; ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    
+                    <li><a href="profil.php">👤 Mon Profil</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
 
-        <?php else: ?>
-            <li><a href="index.php">🏠 Accueil</a></li>
-            <li><a href="produits.php">🍲 La Carte</a></li>
-            <li><a href="inscription.php">📝 Inscription</a></li>
-            <li><a href="connexion.php">🔑 Connexion</a></li>
-        <?php endif; ?>
+                <?php elseif ($role_nav === 'restaurateur'): ?>
+                    <li><a href="commandes.php">👨‍🍳 Gestion Cuisine</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
 
-        <li><button class="btn-theme" onclick="basculerTheme()" title="Changer le thème">🌗</button></li>
-    </ul>
-</nav>
+                <?php elseif ($role_nav === 'livreur'): ?>
+                    <li><a href="livraison.php">🛵 Espace Livreur</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+
+                <?php else: ?>
+                    <li><a href="index.php">🏠 Accueil</a></li>
+                    <li><a href="produits.php">🍲 La Carte</a></li>
+                    <li><a href="inscription.php">📝 Inscription</a></li>
+                    <li><a href="connexion.php">🔑 Connexion</a></li>
+                <?php endif; ?>
+
+                <li><button class="btn-theme" onclick="basculerTheme()" title="Changer le thème">🌗</button></li>
+            </ul>
+        </nav>
     </header>
 
     <main>
@@ -98,6 +125,6 @@ session_start();
     <footer>
         <p>&copy; 2025 Les délices de fafa - Projet Creative Yumland</p>
     </footer>
-    <script src="script.js"></script>
+    <script src="script.js?t=<?php echo time(); ?>"></script>
 </body>
 </html>

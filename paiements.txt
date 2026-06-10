@@ -2,3 +2,9 @@
 TX-963786;9036;timeo.schlumberger@gmail.com;**** **** **** 1234;19;03/06/2026 14:18:55
 TX-663302;3581;timeo.schlumberger@gmail.com;**** **** **** 1234;26.5;03/06/2026 19:38:28
 TX-345125;7148;timeo.schlumberger@gmail.com;**** **** **** 1234;40;03/06/2026 21:28:19
+TX-332407;9563;timeo.schlumberger@gmail.com;**** **** **** 1234;27;04/06/2026 17:30:52
+TX-903184;9212;timeo.schlumberger@gmail.com;**** **** **** 1234;34.5;04/06/2026 17:34:31
+TX-443557;6090;timeo.schlumberger@gmail.com;**** **** **** 1234;12;04/06/2026 18:05:38
+TX-397760;5464;timeo.schlumberger@gmail.com;****1234;26.5;04/06/2026 18:09:13
+TX-197231;2732;timeo.schlumberger@gmail.com;****1234;14.5;05/06/2026 12:16:34
+TX-560555;2476;timeo.schlumberger@gmail.com;****1234;18.4;05/06/2026 13:19:16

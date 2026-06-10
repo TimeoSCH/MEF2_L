@@ -1,151 +1,125 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'livreur') {
+
+if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'livreur') {
     header("Location: index.php");
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'terminer_livraison') {
-    $id_commande = $_POST['id_commande'];
-    $fichier_txt = "data/commandes.txt";
-    $reponse = ['success' => false];
+$commande_en_cours = null;
+$client_info = null;
 
-    if (file_exists($fichier_txt)) {
-        $lignes = file($fichier_txt, FILE_IGNORE_NEW_LINES);
-        $nouvelles_lignes = [];
-        foreach ($lignes as $ligne) {
-            $cols = explode(";", $ligne);
-            if (count($cols) >= 7 && trim($cols[0]) === $id_commande && trim($cols[5]) === $_SESSION['email']) {
-                $cols[4] = 'Livree'; 
-                $reponse['success'] = true;
-            }
-            $nouvelles_lignes[] = implode(";", $cols);
+$fichier_cmd = "data/commandes.txt";
+if (file_exists($fichier_cmd)) {
+    $lignes = file($fichier_cmd, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lignes as $ligne) {
+        $cols = explode(";", $ligne);
+        if (count($cols) >= 6 && trim($cols[4]) === 'En livraison' && trim($cols[5]) === $_SESSION['email']) {
+            $commande_en_cours = [
+                'id' => trim($cols[0]),
+                'client_email' => trim($cols[1]),
+                'plats' => trim($cols[2])
+            ];
+            break;
         }
-        file_put_contents($fichier_txt, implode("\n", $nouvelles_lignes));
     }
-    
-    header('Content-Type: application/json');
-    echo json_encode($reponse);
-    exit(); 
 }
 
-$ma_course = null;
-if (file_exists("data/commandes.txt")) {
-    $fichier = fopen("data/commandes.txt", "r");
-    while (!feof($fichier)) {
-        $ligne = trim(fgets($fichier));
-        if (!empty($ligne)) {
-            $infos = explode(";", $ligne);
-            if (count($infos) >= 7 && trim($infos[5]) == $_SESSION['email'] && trim($infos[4]) == 'En livraison') {
-                $ma_course = $infos;
+if ($commande_en_cours) {
+    $fichier_users = "data/utilisateurs.txt";
+    if (file_exists($fichier_users)) {
+        $lignes_users = file($fichier_users, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lignes_users as $ligne) {
+            $cols_user = explode(";", $ligne);
+            if (trim($cols_user[0]) === $commande_en_cours['client_email']) {
+                $client_info = [
+                    'nom' => trim($cols_user[3]),
+                    'prenom' => trim($cols_user[4]),
+                    'adresse' => trim($cols_user[5])
+                ];
                 break;
             }
         }
     }
-    fclose($fichier);
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['terminer_livraison']) && $commande_en_cours) {
+    $lignes_cmd = file($fichier_cmd, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $nouvelles_lignes = [];
+    foreach ($lignes_cmd as $ligne) {
+        $cols = explode(";", $ligne);
+        if (trim($cols[0]) === $commande_en_cours['id']) {
+            $cols[4] = 'Livree'; // Le statut passe à "Livrée"
+        }
+        $nouvelles_lignes[] = implode(";", $cols);
+    }
+    file_put_contents($fichier_cmd, implode("\n", $nouvelles_lignes));
+    header("Location: livraison.php");
+    exit();
+}
+
+$fichier_css = "style.css";
+if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
+    $fichier_css = "style-sombre.css";
 }
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Livraison - Les délices de fafa</title>
-    
-    <?php
-    $fichier_css = "style.css"; 
-    if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
-        $fichier_css = "style-sombre.css";
-    }
-    ?>
+    <title>Espace Livreur - Les délices de fafa</title>
     <link id="theme-style" rel="stylesheet" href="<?php echo $fichier_css; ?>">
 </head>
-<body class="page-panier">
+<body class="page-livreur">
     <header>
-        <h1 class="header-title">🛵 Livraison Fafa</h1>
+        <h1 class="header-title">Les délices de Fafa 🇲🇦</h1>
         <nav class="main-nav">
             <ul>
                 <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
-                <li><button class="btn-theme" onclick="basculerTheme()" title="Changer le thème">🌗</button></li>
+                <li><button class="btn-theme" onclick="basculerTheme()">🌗</button></li>
             </ul>
         </nav>
     </header>
 
-    <main class="livreur-main flex-justify-center">
-        <div class="card delivery-card">
-            
-            <h2 class="text-center">Course en cours</h2>
-            <hr class="mb-15">
-            
-            <?php if ($ma_course): ?>
+    <main class="main-small">
+        <h2 class="text-center mb-20">🛵 Espace Livreur</h2>
+
+        <?php if ($commande_en_cours && $client_info): ?>
+            <section class="card auth-card">
+                <h3 class="text-center mb-15">Course en cours (Cmd #<?php echo $commande_en_cours['id']; ?>)</h3>
+                <hr class="mb-15">
                 
-                <div class="info-box">
-                    <p class="text-big">📍 <?php echo htmlspecialchars($ma_course[6]); ?></p>
-                    <p><strong>Bâtiment :</strong> B, Étage 3, Porte Gauche</p>
-                    <p><strong>Digicode :</strong> 48A5 🔑</p>
-                    <p><strong>Client :</strong> <?php echo htmlspecialchars($ma_course[1]); ?></p>
-                    <p><strong>Contact :</strong> 06 12 34 56 78</p>
-                    <hr class="mt-10 mb-10">
-                    <p><strong>Sac :</strong> <?php echo htmlspecialchars($ma_course[2]); ?></p>
-                </div>
-                
-                <div class="action-buttons">
-                    <a href="https://www.google.com/maps/search/?api=1&query=<?php echo urlencode($ma_course[6]); ?>" target="_blank" class="btn-xxl btn-gps">🗺️ Ouvrir GPS</a>
+                <div class="mb-20">
+                    <p class="text-large text-bold text-orange mb-10">
+                        📍 <?php echo htmlspecialchars($client_info['adresse']); ?>
+                    </p>
                     
-                    <a href="tel:0612345678" class="btn-xxl btn-tel">📞 Appeler le client</a>
+                    <p><strong>Client :</strong> <?php echo htmlspecialchars($client_info['prenom']) . " " . htmlspecialchars($client_info['nom']); ?></p>
+                    <p><strong>Email :</strong> <?php echo htmlspecialchars($commande_en_cours['client_email']); ?></p>
+                    
+                    <hr class="mt-15 mb-15">
+                    <p class="text-muted-sm"><strong>Sac :</strong> <?php echo htmlspecialchars($commande_en_cours['plats']); ?></p>
                 </div>
-                
-                <hr class="mt-30 mb-30">
-                
-                <button id="btn-terminer" onclick="validerLivraison('<?php echo $ma_course[0]; ?>')" class="btn-xxl btn-valid">✅ LIVRAISON TERMINÉE</button>
-            
-            <?php else: ?>
-                <div class="text-center mt-40 mb-40">
-                    <p class="filter-title">Aucune commande ne vous est assignée pour le moment. ☕</p>
-                    <button onclick="window.location.reload()" class="btn btn-blue mt-20">Actualiser</button>
+
+                <div class="flex-buttons livraison-actions">
+                    <a href="https://www.google.com/maps/search/?api=1&query=<?php echo urlencode($client_info['adresse']); ?>" target="_blank" class="btn btn-blue w-100 text-center">🗺️ Ouvrir GPS</a>
+                    
+                    <a href="mailto:<?php echo htmlspecialchars($commande_en_cours['client_email']); ?>" class="btn btn-orange w-100 text-center">✉️ Contacter le client</a>
+                    
+                    <form action="livraison.php" method="post" class="w-100">
+                        <button type="submit" name="terminer_livraison" class="btn btn-green-large w-100 mt-10">✅ LIVRAISON TERMINÉE</button>
+                    </form>
                 </div>
-            <?php endif; ?>
-        </div>
+            </section>
+        <?php else: ?>
+            <section class="card auth-card text-center">
+                <p class="mb-20">Aucune commande ne vous est assignée pour le moment.</p>
+                <a href="livraison.php" class="btn btn-blue">🔄 Actualiser</a>
+            </section>
+        <?php endif; ?>
     </main>
-
-    <script>
-        function validerLivraison(idCommande) {
-            if (!confirm("Confirmez-vous que la commande a été remise au client ?")) return;
-
-            const btn = document.getElementById('btn-terminer');
-            btn.disabled = true;
-            btn.innerText = "Validation... ⏳";
-            
-            btn.style.opacity = "0.7"; 
-
-            const formData = new FormData();
-            formData.append('action', 'terminer_livraison');
-            formData.append('id_commande', idCommande);
-
-            fetch('livraison.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Course terminée avec succès ! Beau travail.");
-                    window.location.reload(); 
-                } else {
-                    alert("Erreur système lors de la validation.");
-                    btn.disabled = false;
-                    btn.innerText = "✅ LIVRAISON TERMINÉE";
-                    btn.style.opacity = "1";
-                }
-            })
-            .catch(error => {
-                alert("Réseau instable. Veuillez réessayer.");
-                btn.disabled = false;
-                btn.innerText = "✅ LIVRAISON TERMINÉE";
-                btn.style.opacity = "1";
-            });
-        }
-    </script>
-    <script src="script.js"></script>
+    <script src="script.js?t=<?php echo time(); ?>"></script>
 </body>
 </html>

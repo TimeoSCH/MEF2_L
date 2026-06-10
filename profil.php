@@ -1,6 +1,20 @@
 <?php
 session_start();
 
+if (isset($_SESSION['email']) && file_exists("data/utilisateurs.txt")) {
+    $lignes_verif = file("data/utilisateurs.txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lignes_verif as $ligne) {
+        $cols = explode(";", $ligne);
+        if (trim($cols[0]) === $_SESSION['email']) {
+            if (isset($cols[7]) && trim($cols[7]) === 'bloque') {
+                session_destroy(); 
+                header("Location: connexion.php?erreur=bloque"); 
+                exit();
+            }
+        }
+    }
+}
+
 if (!isset($_SESSION['email'])) {
     header("Location: connexion.php");
     exit();
@@ -81,44 +95,56 @@ if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
 <head>
     <meta charset="UTF-8">
     <title>Mon Profil - Les délices de fafa</title>
-    <link id="theme-style" rel="stylesheet" href="<?php echo $fichier_css; ?>">
+    <link id="theme-style" rel="stylesheet" href="<?php echo $fichier_css; ?>?t=<?php echo time(); ?>">
 </head>
 <body class="page-profil">
     <header>
         <h1 class="header-title">Les délices de Fafa 🇲🇦</h1>
         <nav class="main-nav">
-    <ul>
-        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-            <li><a href="produits.php">🍲 La Carte</a></li>
-            <li><a href="admin.php" class="text-success text-bold">🛡️ Tous les Profils</a></li>
-            <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+            <ul>
+                <?php 
+                $role_nav = isset($_SESSION['role']) ? strtolower(trim($_SESSION['role'])) : '';
+                
+                if ($role_nav === 'admin'): 
+                ?>
+                    <li><a href="produits.php">🍲 La Carte</a></li>
+                    <li><a href="admin.php" class="text-success text-bold">🛡️ Tous les Profils</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
 
-        <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'client'): ?>
-            <li><a href="index.php">🏠 Accueil</a></li>
-            <li><a href="produits.php">🍲 La Carte</a></li>
-            
-            <?php if (basename($_SERVER['PHP_SELF']) === 'produits.php'): ?>
-                <li>
-                    <a href="panier.php">
-                        🛒 Mon Panier 
-                        <?php echo (isset($_SESSION['panier']) && count($_SESSION['panier']) > 0) ? "(".array_sum(array_column($_SESSION['panier'], 'quantite')).")" : "(0)"; ?>
-                    </a>
-                </li>
-            <?php endif; ?>
-            
-            <li><a href="profil.php">👤 Mon Profil</a></li>
-            <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+                <?php elseif (in_array($role_nav, ['client', 'vip', 'premium'])): ?>
+                    <li><a href="index.php">🏠 Accueil</a></li>
+                    <li><a href="produits.php">🍲 La Carte</a></li>
+                    
+                    <?php if (basename($_SERVER['PHP_SELF']) === 'produits.php'): ?>
+                        <li>
+                            <a href="panier.php" class="lien-panier-actif">
+                                🛒 Mon Panier 
+                                <?php echo (isset($_SESSION['panier']) && is_array($_SESSION['panier']) && count($_SESSION['panier']) > 0) ? "(".array_sum(array_column($_SESSION['panier'], 'quantite')).")" : "(0)"; ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    
+                    <li><a href="profil.php">👤 Mon Profil</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
 
-        <?php else: ?>
-            <li><a href="index.php">🏠 Accueil</a></li>
-            <li><a href="produits.php">🍲 La Carte</a></li>
-            <li><a href="inscription.php">📝 Inscription</a></li>
-            <li><a href="connexion.php">🔑 Connexion</a></li>
-        <?php endif; ?>
+                <?php elseif ($role_nav === 'restaurateur'): ?>
+                    <li><a href="commandes.php">👨‍🍳 Gestion Cuisine</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
 
-        <li><button class="btn-theme" onclick="basculerTheme()" title="Changer le thème">🌗</button></li>
-    </ul>
-</nav>
+                <?php elseif ($role_nav === 'livreur'): ?>
+                    <li><a href="livraison.php">🛵 Espace Livreur</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+
+                <?php else: ?>
+                    <li><a href="index.php">🏠 Accueil</a></li>
+                    <li><a href="produits.php">🍲 La Carte</a></li>
+                    <li><a href="inscription.php">📝 Inscription</a></li>
+                    <li><a href="connexion.php">🔑 Connexion</a></li>
+                <?php endif; ?>
+
+                <li><button class="btn-theme" onclick="basculerTheme()" title="Changer le thème">🌗</button></li>
+            </ul>
+        </nav>
     </header>
 
     <main>
@@ -134,7 +160,8 @@ if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
                 <hr class="mb-15">
                 
                 <?php if (isset($_GET['action']) && $_GET['action'] === 'editer'): ?>
-                    <form action="profil.php" method="post">
+                    <p id="msg-ajax-profil" class="hidden-msg"></p>
+                    <form onsubmit="sauvegarderProfilAjax(event)">
                         <div class="mb-10">
                             <label><strong>Nom :</strong></label>
                             <input type="text" name="nom" value="<?php echo htmlspecialchars($_SESSION['nom']); ?>" required class="input-sm w-100">
@@ -148,18 +175,18 @@ if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
                             <input type="text" name="adresse" value="<?php echo htmlspecialchars($_SESSION['adresse']); ?>" required class="input-sm w-100">
                         </div>
                         <button type="submit" name="enregistrer_infos" class="btn btn-green mt-15 w-100">💾 Enregistrer les modifications</button>
-                        <a href="profil.php" class="btn btn-red mt-10 w-100 btn-block">Annuler</a>
+                        <a href="profil.php" class="btn btn-red mt-10 w-100 btn-block text-center">Annuler</a>
                     </form>
                 <?php else: ?>
                     <p><strong>Nom :</strong> <?php echo htmlspecialchars($_SESSION['nom']); ?></p>
                     <p><strong>Prénom :</strong> <?php echo htmlspecialchars($_SESSION['prenom']); ?></p>
                     <p><strong>Email :</strong> <?php echo htmlspecialchars($_SESSION['email']); ?></p>
                     <p><strong>Adresse :</strong> <?php echo htmlspecialchars($_SESSION['adresse']); ?></p>
-                    <p class="fidelite-box">
+                    <p class="fidelite-box mt-10">
                         ⭐ <strong>Solde Fidélité :</strong> <span class="fidelite-score"><?php echo $points_fidelite; ?></span> points
                     </p>
                     
-                    <a href="profil.php?action=editer" class="btn btn-blue mt-15 w-100 btn-block">Modifier mes infos</a>
+                    <a href="profil.php?action=editer" class="btn btn-blue mt-15 w-100 btn-block text-center">Modifier mes infos</a>
                 <?php endif; ?>
             </section>
 
@@ -171,7 +198,7 @@ if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
                         <th>N° Cmd</th>
                         <th>Plats</th>
                         <th>Prix</th>
-                        <th>Statut</th>
+                        <th>Statut / Action</th>
                     </tr>
                     <?php if (empty($mes_commandes)): ?>
                         <tr><td colspan="4" class="text-center">Aucune commande passée.</td></tr>
@@ -181,7 +208,13 @@ if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
                                 <td>#<?php echo $cmd['id']; ?></td>
                                 <td><?php echo $cmd['plats']; ?></td>
                                 <td><?php echo number_format((float)$cmd['prix'], 2); ?> €</td>
-                                <td><span class="badge"><?php echo $cmd['statut']; ?></span></td>
+                                <td>
+                                    <span class="badge"><?php echo $cmd['statut']; ?></span>
+                                    
+                                    <?php if (strtolower($cmd['statut']) === 'livree' || strtolower($cmd['statut']) === 'livrée'): ?>
+                                        <a href="notation.php?id=<?php echo $cmd['id']; ?>" class="btn btn-orange btn-sm btn-noter">⭐ Noter</a>
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -189,6 +222,6 @@ if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
             </section>
         </div>
     </main>
-    <script src="script.js"></script>
+    <script src="script.js?t=<?php echo time(); ?>"></script>
 </body>
 </html>

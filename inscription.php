@@ -115,6 +115,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="btn w-100 mt-10">S'inscrire</button>
         </form>
     </main>
-    <script src="script.js"></script>
+    <script src="script.js?t=<?php echo time(); ?>"></script>
 </body>
 </html>

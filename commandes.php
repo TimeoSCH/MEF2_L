@@ -1,63 +1,76 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'restaurateur') {
+
+// Sécurité : seul un restaurateur peut accéder à cette page
+if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'restaurateur') {
     header("Location: index.php");
     exit();
 }
 
-if (isset($_POST['action']) && $_POST['action'] === 'modifier_commande') {
-    $id_commande = $_POST['id_commande'];
+// --- SÉCURITÉ : ÉJECTION IMMÉDIATE DES COMPTES BLOQUÉS ---
+if (isset($_SESSION['email']) && file_exists("data/utilisateurs.txt")) {
+    $lignes_verif = file("data/utilisateurs.txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lignes_verif as $ligne) {
+        $cols = explode(";", $ligne);
+        if (trim($cols[0]) === $_SESSION['email']) {
+            if (isset($cols[7]) && trim($cols[7]) === 'bloque') {
+                session_destroy();
+                header("Location: connexion.php?erreur=bloque");
+                exit();
+            }
+        }
+    }
+}
+
+$fichier_cmd = "data/commandes.txt";
+
+// --- GESTION DES MISES À JOUR ---
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_commande'])) {
+    $id_modif = $_POST['id_commande'];
     $nouveau_statut = $_POST['statut'];
     $nouveau_livreur = $_POST['livreur'];
-    
-    $fichier_cmd = "data/commandes.txt";
-    $reponse = ['success' => false];
-    
+
     if (file_exists($fichier_cmd)) {
         $lignes = file($fichier_cmd, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $nouvelles_lignes = [];
-        
         foreach ($lignes as $ligne) {
             $cols = explode(";", $ligne);
-            if (count($cols) >= 7 && trim($cols[0]) === $id_commande) {
+            if (trim($cols[0]) === $id_modif) {
                 $cols[4] = $nouveau_statut; 
                 $cols[5] = $nouveau_livreur; 
-                $reponse['success'] = true;
             }
             $nouvelles_lignes[] = implode(";", $cols);
         }
         file_put_contents($fichier_cmd, implode("\n", $nouvelles_lignes));
     }
-    
-    header('Content-Type: application/json');
-    echo json_encode($reponse);
+    header("Location: commandes.php");
     exit();
 }
 
-$livreurs = [];
-if (file_exists("data/utilisateurs.txt")) {
-    $lignes_users = file("data/utilisateurs.txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+// --- RÉCUPÉRATION DES LIVREURS ET DES VIP/PREMIUM ---
+$liste_livreurs = [];
+$roles_clients = []; 
+$fichier_users = "data/utilisateurs.txt";
+
+if (file_exists($fichier_users)) {
+    $lignes_users = file($fichier_users, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     foreach ($lignes_users as $ligne) {
         $cols = explode(";", $ligne);
-        if (count($cols) >= 3 && trim($cols[2]) === 'livreur') {
-            $livreurs[] = ['email' => $cols[0], 'nom' => $cols[3] . ' ' . $cols[4]];
+        if (count($cols) >= 3) {
+            $email_user = trim($cols[0]);
+            $role_user = strtolower(trim($cols[2]));
+            
+            if ($role_user === 'livreur') {
+                $liste_livreurs[] = $email_user;
+            }
+            $roles_clients[$email_user] = $role_user; 
         }
     }
 }
 
-$commandes = [];
-if (file_exists("data/commandes.txt")) {
-    $fichier = fopen("data/commandes.txt", "r");
-    while (!feof($fichier)) {
-        $ligne = trim(fgets($fichier));
-        if (!empty($ligne)) {
-            $commandes[] = explode(";", $ligne);
-        }
-    }
-    fclose($fichier);
-}
-
-$fichier_css = "style.css"; 
+$fichier_css = "style.css";
 if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
     $fichier_css = "style-sombre.css";
 }
@@ -66,98 +79,127 @@ if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Cuisine - Les délices de fafa</title>
-    <link id="theme-style" rel="stylesheet" href="<?php echo $fichier_css; ?>">
+    <title>Espace Cuisinier - Les délices de fafa</title>
+    <link id="theme-style" rel="stylesheet" href="<?php echo $fichier_css; ?>?t=<?php echo time(); ?>">
 </head>
-<body>
+<body class="page-restaurateur">
     <header>
         <h1 class="header-title">Les délices de Fafa 🇲🇦</h1>
         <nav class="main-nav">
             <ul>
-                <li><a href="index.php">🏠 Accueil</a></li>
-                <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+                <?php 
+                $role_nav = isset($_SESSION['role']) ? strtolower(trim($_SESSION['role'])) : '';
+                
+                if ($role_nav === 'admin'): ?>
+                    <li><a href="produits.php">🍲 La Carte</a></li>
+                    <li><a href="admin.php" class="text-success text-bold">🛡️ Tous les Profils</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+                <?php elseif (in_array($role_nav, ['client', 'vip', 'premium'])): ?>
+                    <li><a href="index.php">🏠 Accueil</a></li>
+                    <li><a href="produits.php">🍲 La Carte</a></li>
+                    <?php if (basename($_SERVER['PHP_SELF']) === 'produits.php'): ?>
+                        <li>
+                            <a href="panier.php" class="lien-panier-actif">
+                                🛒 Mon Panier <span id="compteur-panier"><?php echo (isset($_SESSION['panier']) && is_array($_SESSION['panier']) && count($_SESSION['panier']) > 0) ? "(".array_sum(array_column($_SESSION['panier'], 'quantite')).")" : "(0)"; ?></span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <li><a href="profil.php">👤 Mon Profil</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+                <?php elseif ($role_nav === 'restaurateur'): ?>
+                    <li><a href="commandes.php">👨‍🍳 Gestion Cuisine</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+                <?php elseif ($role_nav === 'livreur'): ?>
+                    <li><a href="livraison.php">🛵 Espace Livreur</a></li>
+                    <li><a href="deconnexion.php">🚪 Déconnexion</a></li>
+                <?php else: ?>
+                    <li><a href="index.php">🏠 Accueil</a></li>
+                    <li><a href="produits.php">🍲 La Carte</a></li>
+                    <li><a href="inscription.php">📝 Inscription</a></li>
+                    <li><a href="connexion.php">🔑 Connexion</a></li>
+                <?php endif; ?>
                 <li><button class="btn-theme" onclick="basculerTheme()" title="Changer le thème">🌗</button></li>
             </ul>
         </nav>
     </header>
-    <main>
-        <h2 class="text-center">👨‍🍳 Gestion des commandes</h2>
-        <div class="card-grid mb-40">
-            <?php foreach (array_reverse($commandes) as $cmd): ?>
-                <article class="card <?php echo ($cmd[4] == 'A preparer') ? 'border-red' : 'border-orange'; ?>">
-                    <h4>Commande #<?php echo htmlspecialchars($cmd[0]); ?></h4>
-                    <p class="mb-10"><strong>Contenu :</strong> <?php echo htmlspecialchars($cmd[2]); ?></p>
-                    <p class="mb-10"><strong>Prix :</strong> <?php echo htmlspecialchars($cmd[3]); ?> €</p>
-                    
-                    <hr class="mt-10 mb-10">
-                    
-                    <label class="form-label text-sm">Statut :</label>
-                    <select id="statut_<?php echo htmlspecialchars($cmd[0]); ?>" class="input-sm mb-10">
-                        <option value="Payée" <?php echo ($cmd[4]=='Payée')?'selected':''; ?>>Payée</option>
-                        <option value="A preparer" <?php echo ($cmd[4]=='A preparer')?'selected':''; ?>>À préparer</option>
-                        <option value="En preparation" <?php echo ($cmd[4]=='En preparation')?'selected':''; ?>>En préparation</option>
-                        <option value="Prete" <?php echo ($cmd[4]=='Prete')?'selected':''; ?>>Prête</option>
-                        <option value="En livraison" <?php echo ($cmd[4]=='En livraison')?'selected':''; ?>>En livraison</option>
-                        <option value="Livree" <?php echo ($cmd[4]=='Livree')?'selected':''; ?>>Livrée</option>
-                    </select>
 
-                    <label class="form-label text-sm">Assigner un livreur :</label>
-                    <select id="livreur_<?php echo htmlspecialchars($cmd[0]); ?>" class="input-sm mb-10">
-                        <option value="aucun">-- Aucun livreur --</option>
-                        <?php foreach ($livreurs as $liv): ?>
-                            <option value="<?php echo htmlspecialchars($liv['email']); ?>" <?php echo ($cmd[5] == $liv['email']) ? 'selected' : ''; ?>>
-                                🛵 <?php echo htmlspecialchars($liv['nom']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                    
-                    <button class="btn btn-green w-100 mt-10" onclick="modifierCommande('<?php echo htmlspecialchars($cmd[0]); ?>', this)">Enregistrer les modifications</button>
-                </article>
-            <?php endforeach; ?>
+    <main>
+        <h2 class="text-center mb-20 text-green">👨‍🍳 Gestion des commandes</h2>
+        
+        <div class="commandes-grid">
+            <?php
+            if (file_exists($fichier_cmd)) {
+                $lignes = file($fichier_cmd, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+                $lignes = array_reverse($lignes); 
+                
+                foreach ($lignes as $ligne) {
+                    $cols = explode(";", $ligne);
+                    if (count($cols) >= 5) {
+                        $id = htmlspecialchars(trim($cols[0]));
+                        $client = htmlspecialchars(trim($cols[1]));
+                        $plats = htmlspecialchars(trim($cols[2]));
+                        $prix = htmlspecialchars(trim($cols[3]));
+                        $statut = trim($cols[4]);
+                        $livreur_assigne = isset($cols[5]) ? trim($cols[5]) : 'aucun';
+                        $moment = (isset($cols[7]) && !empty(trim($cols[7]))) ? trim($cols[7]) : 'Immediat';
+                        
+                        // -- VÉRIFICATION VIP/PREMIUM --
+                        $role_du_client = isset($roles_clients[$client]) ? $roles_clients[$client] : 'client';
+                        $etoile_priorite = '';
+                        if ($role_du_client === 'vip' || $role_du_client === 'premium') {
+                            $etoile_priorite = "<span class='badge-priorite'>⭐ PRIORITÉ ".strtoupper($role_du_client)."</span>";
+                        }
+
+                        // -- AFFICHAGE DE L'HEURE --
+                        if ($moment === 'Immediat') {
+                            $affichage_moment = "<span class='moment-immediat'>⚡ Immédiat</span>";
+                        } else {
+                            $affichage_moment = "<span class='moment-retarde'>⏰ $moment</span>";
+                        }
+                        ?>
+                        
+                        <div class="commande-card card">
+                            <h3>Commande #<?= $id ?></h3>
+                            <?= $etoile_priorite ?>
+                            
+                            <p><strong>Contenu :</strong> <?= $plats ?></p>
+                            <p><strong>Prix :</strong> <?= $prix ?> €</p>
+                            <p><strong>Heure :</strong> <?= $affichage_moment ?></p>
+                            
+                            <hr>
+                            
+                            <form action="commandes.php" method="post">
+                                <input type="hidden" name="id_commande" value="<?= $id ?>">
+                                
+                                <label>Statut :</label>
+                                <select name="statut">
+                                    <option value="A preparer" <?= ($statut=='A preparer')?'selected':'' ?>>À préparer</option>
+                                    <option value="Prete" <?= ($statut=='Prete')?'selected':'' ?>>Prête</option>
+                                    <option value="En livraison" <?= ($statut=='En livraison')?'selected':'' ?>>En livraison</option>
+                                    <option value="Livree" <?= ($statut=='Livree')?'selected':'' ?>>Livrée</option>
+                                </select>
+                                
+                                <label>Assigner un livreur :</label>
+                                <select name="livreur">
+                                    <option value="aucun">-- Aucun livreur --</option>
+                                    <?php foreach ($liste_livreurs as $l): ?>
+                                        <option value="<?= $l ?>" <?= ($livreur_assigne==$l)?'selected':'' ?>>🛵 <?= explode('@', $l)[0] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                
+                                <button type="submit">Enregistrer les modifications</button>
+                            </form>
+                        </div>
+                        
+                        <?php
+                    }
+                }
+            } else {
+                echo "<p class='text-center'>Aucune commande pour le moment.</p>";
+            }
+            ?>
         </div>
     </main>
-    
-    <script>
-        function modifierCommande(idCommande, bouton) {
-            let statutChoisi = document.getElementById('statut_' + idCommande).value;
-            let livreurChoisi = document.getElementById('livreur_' + idCommande).value;
-            
-            let texteOriginal = bouton.innerText;
-            bouton.innerText = "Enregistrement... ⏳";
-            bouton.disabled = true;
-            
-            let formData = new FormData();
-            formData.append('action', 'modifier_commande');
-            formData.append('id_commande', idCommande);
-            formData.append('statut', statutChoisi);
-            formData.append('livreur', livreurChoisi);
-            
-            fetch('commandes.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    bouton.innerText = "✅ Modifications enregistrées !";
-                    bouton.className = "btn btn-blue w-100 mt-10";
-                    
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                } else {
-                    alert("Erreur lors de l'enregistrement de la commande.");
-                    bouton.innerText = texteOriginal;
-                    bouton.disabled = false;
-                }
-            })
-            .catch(error => {
-                alert("Erreur réseau. Impossible de contacter le serveur.");
-                bouton.innerText = texteOriginal;
-                bouton.disabled = false;
-            });
-        }
-    </script>
-    <script src="script.js"></script>
+    <script src="script.js?t=<?php echo time(); ?>"></script>
 </body>
 </html>
