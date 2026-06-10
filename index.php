@@ -6,10 +6,10 @@ if (isset($_SESSION['email']) && file_exists("data/utilisateurs.txt")) {
     foreach ($lignes_verif as $ligne) {
         $cols = explode(";", $ligne);
         if (trim($cols[0]) === $_SESSION['email']) {
-            // Si la colonne 8 (index 7) existe et vaut 'bloque'
+            
             if (isset($cols[7]) && trim($cols[7]) === 'bloque') {
-                session_destroy(); // On détruit sa session
-                header("Location: connexion.php?erreur=bloque"); // On l'éjecte vers la page de connexion
+                session_destroy();
+                header("Location: connexion.php?erreur=bloque"); 
                 exit();
             }
         }
