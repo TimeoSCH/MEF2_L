@@ -100,7 +100,6 @@ if (isset($_SESSION['email']) && file_exists("data/utilisateurs.txt")) {
                     <h4>Couscous</h4>
                     <p>Semoule fine, agneau et légumes frais.</p>
                     <p><strong>18.00 €</strong></p>
-                    <button class="btn">Commander</button>
                 </article>
 
                 <article class="card">
@@ -108,7 +107,6 @@ if (isset($_SESSION['email']) && file_exists("data/utilisateurs.txt")) {
                     <h4>Tajine d'agneau aux pruneaux</h4>
                     <p>Mijoté sucré-salé aux amandes grillées.</p>
                     <p><strong>16.50 €</strong></p>
-                    <button class="btn">Commander</button>
                 </article>
 
                 <article class="card">
@@ -116,7 +114,6 @@ if (isset($_SESSION['email']) && file_exists("data/utilisateurs.txt")) {
                     <h4>Thé à la Menthe</h4>
                     <p>Le traditionnel, servi bien chaud.</p>
                     <p><strong>3.00 €</strong></p>
-                    <button class="btn">Commander</button>
                 </article>
             </div>
         </section>
