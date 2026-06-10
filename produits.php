@@ -8,10 +8,9 @@ if (isset($_SESSION['email']) && file_exists("data/utilisateurs.txt")) {
     foreach ($lignes_verif as $ligne) {
         $cols = explode(";", $ligne);
         if (trim($cols[0]) === $_SESSION['email']) {
-            // Si la colonne 8 (index 7) existe et vaut 'bloque'
             if (isset($cols[7]) && trim($cols[7]) === 'bloque') {
-                session_destroy(); // On détruit sa session
-                header("Location: connexion.php?erreur=bloque"); // On l'éjecte vers la page de connexion
+                session_destroy(); 
+                header("Location: connexion.php?erreur=bloque");
                 exit();
             }
         }
@@ -42,10 +41,8 @@ if (isset($_POST['action']) && $_POST['action'] === 'ajouter_panier') {
         $_SESSION['panier'][] = ['id' => $id, 'nom' => $nom, 'prix' => $prix, 'quantite' => 1];
     }
     
-    // On calcule le nouveau nombre total d'articles dans le panier
     $total_articles = array_sum(array_column($_SESSION['panier'], 'quantite'));
 
-    // On renvoie les données en JSON au Javascript
     header('Content-Type: application/json');
     echo json_encode([
         "success" => true,
@@ -55,9 +52,6 @@ if (isset($_POST['action']) && $_POST['action'] === 'ajouter_panier') {
     exit();
 }
 
-// ------------------------------------------------------------------
-// 2. REQUÊTE ASYNCHRONE : FILTRER LA CARTE SANS RECHARGER LA PAGE
-// ------------------------------------------------------------------
 if (isset($_POST['action']) && $_POST['action'] === 'filtrer_asynchrone') {
     $filtres = json_decode($_POST['filtres'], true);
     $html_resultat = "";
@@ -90,7 +84,6 @@ if (isset($_POST['action']) && $_POST['action'] === 'filtrer_asynchrone') {
                         $img = htmlspecialchars($infos[6]);
                         $desc = htmlspecialchars($infos[3]);
                         
-                        // Le formulaire généré ici utilise aussi l'ajout asynchrone (onsubmit)
                         $html_resultat .= "
                         <article class='card plat-card' data-prix='{$infos[4]}'>
                             <img src='{$img}' alt='{$nom}'>
@@ -122,7 +115,6 @@ if (isset($_POST['action']) && $_POST['action'] === 'filtrer_asynchrone') {
     exit();
 }
 
-// --- CHARGEMENT NORMAL DE LA PAGE ---
 $entrees = [];
 $plats_principaux = [];
 $desserts_boissons = [];
@@ -316,13 +308,12 @@ if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
     ?>
 
     <script>
-        // 1. Fonction pour ajouter au panier sans rechargement
         function ajouterAuPanierAjax(event) {
-            event.preventDefault(); // Bloque le rechargement brutal de la page
+            event.preventDefault(); 
             
             const form = event.target;
             const formData = new FormData(form);
-            formData.append('action', 'ajouter_panier'); // On indique à PHP ce qu'on veut faire
+            formData.append('action', 'ajouter_panier'); 
 
             fetch('produits.php', {
                 method: 'POST',
@@ -331,25 +322,21 @@ if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Met à jour le (0) à côté du panier dans le menu
                     const spanPanier = document.getElementById('compteur-panier');
                     if (spanPanier) {
                         spanPanier.innerText = "(" + data.total_articles + ")";
                     }
                     
-                    // Affiche le message vert de succès
                     const msgBox = document.getElementById('msg-panier-ajax');
                     msgBox.innerText = data.message;
                     msgBox.style.display = 'block';
                     
-                    // Fait disparaître le message après 3 secondes
                     setTimeout(() => { msgBox.style.display = 'none'; }, 3000);
                 }
             })
             .catch(error => console.error('Erreur réseau:', error));
         }
 
-        // 2. Fonction de Tri
         function trierPlats() {
             const select = document.getElementById('tri_produits').value;
             const conteneur = document.getElementById('conteneur-plats');
@@ -370,7 +357,6 @@ if (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'sombre') {
             }
         }
 
-        // 3. Fonction de Filtre Asynchrone
         function filtrerAsynchrone() {
             const checkboxes = document.querySelectorAll('.filtre-box:checked');
             let valeursCochees = [];
